@@ -3,6 +3,9 @@
 name: WinNext Android Build
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
