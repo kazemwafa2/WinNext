@@ -1,4 +1,4 @@
-name: Any branch compilation (Node24 test)
+name: WinNext Android Build (Node24 test)
 
 on:
   workflow_dispatch:
@@ -141,19 +141,19 @@ jobs:
     - name: Upload standard APK
       uses: actions/upload-artifact@v4
       with:
-       name: standard-debug
+       name: WinNext-standard-debug
        path: ./app/build/outputs/apk/standard/debug/app-standard-debug.apk
 
     - name: Upload ludashi APK
       uses: actions/upload-artifact@v4
       with:
-       name: ludashi-debug
+       name: WinNext-ludashi-debug
        path: ./app/build/outputs/apk/ludashi/debug/app-ludashi-debug.apk
 
     - name: Upload pubg APK
       uses: actions/upload-artifact@v4
       with:
-       name: pubg-debug
+       name: WinNext-pubg-debug
        path: ./app/build/outputs/apk/pubg/debug/app-pubg-debug.apk
 
     - name: "Get Short SHA"
