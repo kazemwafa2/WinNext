@@ -120,7 +120,7 @@ preBuild.dependsOn(downloadProton)
 
 android {
     namespace 'com.winlator.star'
-    compileSdk 34
+    compileSdk 35
     buildToolsVersion "35.0.0"
 
     defaultConfig {
