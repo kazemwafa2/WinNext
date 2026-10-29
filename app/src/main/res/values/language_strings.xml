@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_title">Language</string>
+    <string name="language_dari">دری</string>
+    <string name="language_persian">فارسی</string>
+    <string name="language_english">English</string>
+    <string name="language_restart_note">برای اعمال کامل زبان، ممکن است برنامه دوباره راه‌اندازی شود.</string>
+</resources>

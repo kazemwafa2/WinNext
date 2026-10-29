@@ -34,6 +34,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 import androidx.collection.ArrayMap;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -109,6 +111,50 @@ public class SettingsFragment extends Fragment {
         preloaderDialog = new PreloaderDialog(getActivity());
     }
 
+
+    private void addLanguageSelector(View root, Context context) {
+        if (!(root instanceof ViewGroup)) return;
+        ViewGroup parent = (ViewGroup) root;
+        LinearLayout target = findLanguageLayout(parent);
+        if (target == null) return;
+
+        Button button = new Button(context);
+        button.setText("زبان برنامه / App language");
+        target.addView(button, 0);
+
+        button.setOnClickListener(v -> {
+            String[] names = {"دری", "فارسی", "English"};
+            String[] tags = {"fa-AF", "fa-IR", "en"};
+            String current = preferences.getString("app_language_tag", "fa-AF");
+            int selected = 0;
+            for (int i = 0; i < tags.length; i++) {
+                if (tags[i].equals(current)) selected = i;
+            }
+            new AlertDialog.Builder(context)
+                .setTitle("انتخاب زبان / Choose language")
+                .setSingleChoiceItems(names, selected, (dialog, which) -> {
+                    preferences.edit().putString("app_language_tag", tags[which]).apply();
+                    AppCompatDelegate.setApplicationLocales(
+                        LocaleListCompat.forLanguageTags(tags[which]));
+                    dialog.dismiss();
+                })
+                .setNegativeButton("لغو", null)
+                .show();
+        });
+    }
+
+    private LinearLayout findLanguageLayout(ViewGroup parent) {
+        if (parent instanceof LinearLayout) return (LinearLayout) parent;
+        for (int i = 0; i < parent.getChildCount(); i++) {
+            View child = parent.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                LinearLayout found = findLanguageLayout((ViewGroup) child);
+                if (found != null) return found;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -126,6 +172,7 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.settings_fragment, container, false);
         final Context context = getContext();
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        addLanguageSelector(view, context);
 
         isDarkMode = true;
         // Apply dynamic styles

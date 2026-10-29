@@ -13,6 +13,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -125,6 +126,18 @@ class MainActivity : AppCompatActivity() {
         AppThemeState.init(this)
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+
+        // Default language: Dari (Afghanistan); keep the user's choice.
+        val languageKey = "app_language_tag"
+        if (!prefs.contains(languageKey)) {
+            prefs.edit().putString(languageKey, "fa-AF").apply()
+        }
+        val languageTag = prefs.getString(languageKey, "fa-AF") ?: "fa-AF"
+        if (AppCompatDelegate.getApplicationLocales().toLanguageTags() != languageTag) {
+            AppCompatDelegate.setApplicationLocales(
+                LocaleListCompat.forLanguageTags(languageTag)
+            )
+        }
 
         if (prefs.getBoolean("enable_big_picture_mode", false)) {
             startActivity(Intent(this, BigPictureActivity::class.java))
