@@ -1,5 +1,7 @@
 package com.winlator.star.ui.screens
 
+import com.winlator.star.R
+
 import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
