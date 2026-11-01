@@ -103,7 +103,8 @@ public final class DefaultContainerManager {
             } finally {
                 inFlight.set(false);
             }
-            main.post(() -> callback.call(result));
+            final Result finalResult = result;
+            main.post(() -> callback.call(finalResult));
         });
     }
 
