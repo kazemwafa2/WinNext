@@ -1,4 +1,6 @@
+@file:OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 package com.winlator.star.ui.screens
+
 
 import android.app.Activity
 import android.content.Intent
