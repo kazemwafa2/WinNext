@@ -42,42 +42,69 @@ public class AdrenotoolsManager {
     }
         
     public String getLibraryName(String adrenoToolsDriverId) {
-        String libraryName = "";
         File driverPath = new File(adrenotoolsContentDir, adrenoToolsDriverId);
+        File metaProfile = new File(driverPath, "meta.json");
+
+        if (!metaProfile.isFile() || !metaProfile.canRead())
+            return "";
+
         try {
-            File metaProfile = new File(driverPath, "meta.json");
-            JSONObject jsonObject = new JSONObject(FileUtils.readString(metaProfile));
-            libraryName = jsonObject.getString("libraryName");
+            String metaContent = FileUtils.readString(metaProfile);
+            if (metaContent == null || metaContent.trim().isEmpty())
+                return "";
+
+            JSONObject jsonObject = new JSONObject(metaContent);
+            return jsonObject.optString("libraryName", "");
         }
-        catch (JSONException e) {
+        catch (Exception e) {
+            android.util.Log.e("AdrenotoolsManager",
+                    "Failed to read driver metadata: " + metaProfile.getAbsolutePath(), e);
+            return "";
         }
-        return libraryName;
     }
     
     public String getDriverName(String adrenoToolsDriverId) {
-        String driverName = "";
         File driverPath = new File(adrenotoolsContentDir, adrenoToolsDriverId);
+        File metaProfile = new File(driverPath, "meta.json");
+
+        if (!metaProfile.isFile() || !metaProfile.canRead())
+            return "";
+
         try {
-            File metaProfile = new File(driverPath, "meta.json");
-            JSONObject jsonObject = new JSONObject(FileUtils.readString(metaProfile));
-            driverName = jsonObject.getString("name");
+            String metaContent = FileUtils.readString(metaProfile);
+            if (metaContent == null || metaContent.trim().isEmpty())
+                return "";
+
+            JSONObject jsonObject = new JSONObject(metaContent);
+            return jsonObject.optString("name", "");
         }
-        catch (JSONException e) {
+        catch (Exception e) {
+            android.util.Log.e("AdrenotoolsManager",
+                    "Failed to read driver metadata: " + metaProfile.getAbsolutePath(), e);
+            return "";
         }
-        return driverName;
     }
 
     public String getDriverVersion(String adrenoToolsDriverId) {
-        String driverVersion = "";
         File driverPath = new File(adrenotoolsContentDir, adrenoToolsDriverId);
+        File metaProfile = new File(driverPath, "meta.json");
+
+        if (!metaProfile.isFile() || !metaProfile.canRead())
+            return "";
+
         try {
-            File metaProfile = new File(driverPath, "meta.json");
-            JSONObject jsonObject = new JSONObject(FileUtils.readString(metaProfile));
-            driverVersion = jsonObject.getString("driverVersion");
+            String metaContent = FileUtils.readString(metaProfile);
+            if (metaContent == null || metaContent.trim().isEmpty())
+                return "";
+
+            JSONObject jsonObject = new JSONObject(metaContent);
+            return jsonObject.optString("driverVersion", "");
         }
-        catch (JSONException e) {
+        catch (Exception e) {
+            android.util.Log.e("AdrenotoolsManager",
+                    "Failed to read driver metadata: " + metaProfile.getAbsolutePath(), e);
+            return "";
         }
-        return driverVersion;
     }
 
     public String getDriverPath(String adrenotoolsDriverId) {

@@ -146,11 +146,14 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleDebug
 
+    - name: Rename standard APK
+      run: mv app/build/outputs/apk/standard/debug/app-standard-debug.apk app/build/outputs/apk/standard/debug/WinNext.apk
+
     - name: Upload standard APK
       uses: actions/upload-artifact@v4
       with:
        name: WinNext-standard-debug
-       path: ./app/build/outputs/apk/standard/debug/app-standard-debug.apk
+       path: ./app/build/outputs/apk/standard/debug/WinNext.apk
 
     - name: Upload ludashi APK
       uses: actions/upload-artifact@v4

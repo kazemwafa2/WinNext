@@ -169,7 +169,7 @@ jobs:
     - name: Rename APK
       run: |
         mv app/build/outputs/apk/standard/debug/app-standard-debug.apk \
-           app/build/outputs/apk/standard/debug/star-${{ github.event.inputs.release_number }}.apk
+           app/build/outputs/apk/standard/debug/WinNext.apk
 
     - name: Generate changelog
       run: |
@@ -195,5 +195,5 @@ jobs:
           </p>
 
           ${{ env.CHANGELOG }}
-        files: app/build/outputs/apk/standard/debug/star-${{ github.event.inputs.release_number }}.apk
+        files: app/build/outputs/apk/standard/debug/WinNext.apk
         prerelease: true

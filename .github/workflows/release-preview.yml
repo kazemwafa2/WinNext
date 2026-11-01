@@ -135,14 +135,14 @@ jobs:
     - name: Rename APK
       run: |
         SRC="app/build/outputs/apk/standard/debug/app-standard-debug.apk"
-        DEST="$(dirname "$SRC")/star-standard-ci-${{ env.BUILD_DATE }}-${{ env.SHORT_SHA }}.apk"
+        DEST="$(dirname "$SRC")/WinNext.apk"
         mv "$SRC" "$DEST"
         echo "RELEASE_APK=$DEST" >> $GITHUB_ENV
 
     - name: Upload Standard APK to Actions Tab
       uses: actions/upload-artifact@v4
       with:
-        name: apk-star-standard
+        name: WinNext
         path: ${{ env.RELEASE_APK }}
         if-no-files-found: error
         retention-days: 7

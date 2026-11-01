@@ -162,14 +162,18 @@ jobs:
     - name: Rename APK
       run: |
         SRC='${{ matrix.flavor.apkPath }}'
-        DEST="$(dirname "$SRC")/${{ matrix.flavor.apkLabel }}-${{ github.event.inputs.release_number }}.apk"
+        if [ "${{ matrix.flavor.apkLabel }}" = "star-standard" ]; then
+          DEST="$(dirname "$SRC")/WinNext.apk"
+        else
+          DEST="$(dirname "$SRC")/${{ matrix.flavor.apkLabel }}-${{ github.event.inputs.release_number }}.apk"
+        fi
         mv "$SRC" "$DEST"
         echo "RELEASE_APK=$DEST" >> $GITHUB_ENV
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
       with:
-        name: apk-${{ matrix.flavor.apkLabel }}
+        name: WinNext-${{ matrix.flavor.apkLabel }}
         path: ${{ env.RELEASE_APK }}
         if-no-files-found: error
         retention-days: 7

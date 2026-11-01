@@ -61,7 +61,8 @@ public abstract class FileUtils {
     }
 
     public static String readString(Context context, String assetFile) {
-        return new String(read(context, assetFile), StandardCharsets.UTF_8);
+        byte[] data = read(context, assetFile);
+        return data == null ? "" : new String(data, StandardCharsets.UTF_8);
     }
 
     public static String readString(File file) {
