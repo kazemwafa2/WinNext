@@ -2,8 +2,6 @@ package com.winlator.star;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -11,26 +9,41 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.winlator.star.container.ContainerLauncher;
+import com.winlator.star.core.AppUtils;
+import com.winlator.star.xenvironment.ImageFs;
+import com.winlator.star.xenvironment.ImageFsInstaller;
+
+/**
+ * WinNext desktop shell (Windows 11 inspired).
+ *
+ * IMPORTANT BEHAVIOR CHANGE (real execution, no fake boot):
+ *  - onCreate runs REAL preparation: engine files check + automatic creation/repair of
+ *    the shared default container ("WinNext Default"), with visible progress.
+ *  - The blue "WinNext Apps" icon is wired to the SHARED execution service
+ *    (ContainerLauncher) — the exact same service the Containers list Play button uses.
+ *    Tapping it starts the real Windows environment (XServerDisplayActivity) or brings
+ *    the already-running session back to the front. It never opens a demo page.
+ */
 public class WinNextDesktopActivity extends Activity {
     private FrameLayout root;
     private View menu;
     private final Handler h = new Handler(Looper.getMainLooper());
+    private boolean preparing = false;
 
     @Override
     protected void onCreate(Bundle b) {
         super.onCreate(b);
         root = new FrameLayout(this);
         setContentView(root);
-        showBoot();
+        prepareEnvironment();
     }
 
     @Override
@@ -61,7 +74,7 @@ public class WinNextDesktopActivity extends Activity {
     private static final int BG = Color.rgb(0, 8, 26);
 
     private View logo(int sizeDp) {
-        ImageView iv = new ImageView(this);
+        android.widget.ImageView iv = new android.widget.ImageView(this);
         iv.setImageResource(R.drawable.winnext_icon);
         iv.setLayoutParams(new LinearLayout.LayoutParams(dp(sizeDp), dp(sizeDp)));
         return iv;
@@ -84,35 +97,107 @@ public class WinNextDesktopActivity extends Activity {
         return tv;
     }
 
-    private void centerScreen(String msg) {
+    /** Boot screen with a spinner and a status line (real work happens behind it). */
+    private void bootScreen(String msg) {
         root.removeAllViews();
         menu = null;
         root.setBackgroundColor(BG);
         LinearLayout box = new LinearLayout(this);
         box.setOrientation(LinearLayout.VERTICAL);
         box.setGravity(Gravity.CENTER);
-        ProgressBar pb = new ProgressBar(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dp(36), dp(36));
-        lp.setMargins(0, dp(16), 0, dp(24));
-        if (msg == null) {
-            ImageView iv = new ImageView(this);
-            iv.setImageResource(R.drawable.winnext_boot);
-            iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            box.addView(iv, new LinearLayout.LayoutParams(-1, 0, 1));
-        } else {
-            box.addView(logo(72));
-            TextView t = text(msg, 20, Color.WHITE);
+        LinearLayout bootBox = new LinearLayout(this);
+        bootBox.setOrientation(LinearLayout.VERTICAL);
+        bootBox.setGravity(Gravity.CENTER);
+        android.widget.ImageView iv = new android.widget.ImageView(this);
+        iv.setImageResource(R.drawable.winnext_boot);
+        iv.setScaleType(android.widget.ImageView.ScaleType.FIT_CENTER);
+        bootBox.addView(iv, new LinearLayout.LayoutParams(-1, 0, 1));
+        box.addView(bootBox, new LinearLayout.LayoutParams(-1, 0, 1));
+        if (msg != null) {
+            TextView t = text(msg, 15, Color.parseColor("#B8D8FF"));
             t.setGravity(Gravity.CENTER);
-            t.setPadding(0, dp(16), 0, 0);
+            t.setPadding(dp(24), 0, dp(24), dp(8));
             box.addView(t);
         }
+        ProgressBar pb = new ProgressBar(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dp(36), dp(36));
+        lp.setMargins(0, dp(8), 0, dp(28));
         box.addView(pb, lp);
         root.addView(box, new FrameLayout.LayoutParams(-1, -1));
     }
 
-    private void showBoot() {
-        centerScreen(null);
-        h.postDelayed(this::showDesktop, 3500);
+    /** Setup-required screen: engine files are not installed yet. */
+    private void setupNeededScreen() {
+        root.removeAllViews();
+        menu = null;
+        root.setBackgroundColor(BG);
+        LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.setGravity(Gravity.CENTER);
+        box.setPadding(dp(32), 0, dp(32), 0);
+        box.addView(logo(72));
+        TextView t = text(getString(R.string.desktop_setup_needed), 18, Color.WHITE);
+        t.setGravity(Gravity.CENTER);
+        t.setPadding(0, dp(16), 0, dp(8));
+        box.addView(t);
+        TextView d = text(getString(R.string.desktop_setup_needed_desc), 14, Color.parseColor("#B8D8FF"));
+        d.setGravity(Gravity.CENTER);
+        box.addView(d);
+        LinearLayout.LayoutParams bp = new LinearLayout.LayoutParams(-2, -2);
+        bp.topMargin = dp(24);
+        box.addView(button(getString(R.string.desktop_open_setup),
+                Color.parseColor("#2B6CD9"), v -> openSetup()), bp);
+        root.addView(box, new FrameLayout.LayoutParams(-1, -1));
+    }
+
+    /**
+     * REAL preparation (replaces the former 3.5s fake boot delay):
+     * 1. verify engine files (ImageFs) — if missing, point the user to the real setup;
+     * 2. make sure the shared default container exists and is healthy.
+     */
+    private void prepareEnvironment() {
+        if (preparing) return;
+        preparing = true;
+        bootScreen(getString(R.string.desktop_preparing_engine));
+
+        ImageFs imageFs = ImageFs.find(this);
+        if (!imageFs.isValid() || imageFs.getVersion() < ImageFsInstaller.LATEST_VERSION) {
+            preparing = false;
+            setupNeededScreen();
+            return;
+        }
+
+        bootScreen(getString(R.string.desktop_preparing_container));
+        ContainerLauncher.prepareDefaultContainer(this, new ContainerLauncher.Listener() {
+            @Override public void onPreparing() { /* already showing progress */ }
+
+            @Override public void onLaunchStarted(com.winlator.star.container.Container container) {
+                preparing = false;
+                // Default container is ready; the blue icon now launches it directly.
+                showDesktop();
+            }
+
+            @Override public void onLaunchFailed(String errorMessageKey) {
+                preparing = false;
+                showDesktopWithWarning(errorMessageKey);
+            }
+        });
+    }
+
+    /** Desktop loads even if preparation failed — with an honest message, never a fake state. */
+    private void showDesktopWithWarning(String errorMessageKey) {
+        showDesktop();
+        String msg;
+        if ("engine_not_installed".equals(errorMessageKey)) {
+            msg = getString(R.string.desktop_error_engine_missing);
+        } else if ("recreate_failed".equals(errorMessageKey)) {
+            msg = getString(R.string.desktop_error_recreate_failed);
+        } else if ("create_failed".equals(errorMessageKey)) {
+            msg = getString(R.string.desktop_error_create_failed);
+        } else {
+            msg = getString(R.string.launch_failed);
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     private void showDesktop() {
@@ -121,16 +206,16 @@ public class WinNextDesktopActivity extends Activity {
             new int[]{Color.parseColor("#00081A"), Color.parseColor("#0A3D91"), Color.parseColor("#2B8CFF")});
         root.setBackground(bg);
 
-        // Desktop icon: opens the Windows engine (Winlator)
+        // Desktop icon: directly runs the default container through the shared service.
         LinearLayout icon = new LinearLayout(this);
         icon.setOrientation(LinearLayout.VERTICAL);
         icon.setGravity(Gravity.CENTER);
         icon.setPadding(dp(8), dp(8), dp(8), dp(8));
         icon.addView(logo(48));
-        TextView lbl = text("WinNext Apps", 12, Color.WHITE);
+        TextView lbl = text(getString(R.string.desktop_apps_label), 12, Color.WHITE);
         lbl.setGravity(Gravity.CENTER);
         icon.addView(lbl);
-        icon.setOnClickListener(v -> openEngine());
+        icon.setOnClickListener(v -> runDefaultContainer());
         FrameLayout.LayoutParams ip = new FrameLayout.LayoutParams(dp(96), -2);
         ip.setMargins(dp(24), dp(40), 0, 0);
         root.addView(icon, ip);
@@ -167,17 +252,17 @@ public class WinNextDesktopActivity extends Activity {
         m.setBackground(shape(Color.parseColor("#F0202028"), 16));
 
         m.addView(text("WinNext", 22, Color.WHITE));
-        m.addView(text("Your desktop", 12, Color.parseColor("#7CC4FF")));
+        m.addView(text(getString(R.string.desktop_menu_subtitle), 12, Color.parseColor("#7CC4FF")));
 
-        addMenuButton(m, "Run Windows apps  ·  Winlator", "containers",
+        addMenuButton(m, getString(R.string.desktop_run_windows_apps), "run_default",
             Color.parseColor("#2B6CD9"));
-        addMenuButton(m, "Containers", "containers", Color.parseColor("#303847"));
-        addMenuButton(m, "Shortcuts", "shortcuts", Color.parseColor("#303847"));
-        addMenuButton(m, "Settings", "settings", Color.parseColor("#303847"));
-        addMenuButton(m, "This PC  ·  File Manager", "file_manager",
+        addMenuButton(m, getString(R.string.screen_containers), "containers", Color.parseColor("#303847"));
+        addMenuButton(m, getString(R.string.screen_shortcuts), "shortcuts", Color.parseColor("#303847"));
+        addMenuButton(m, getString(R.string.screen_settings), "settings", Color.parseColor("#303847"));
+        addMenuButton(m, getString(R.string.screen_file_manager), "file_manager",
             Color.parseColor("#303847"));
-        addMenuButton(m, "Appearance", "appearance", Color.parseColor("#303847"));
-        addMenuButton(m, "Saves", "saves", Color.parseColor("#303847"));
+        addMenuButton(m, getString(R.string.screen_personalization), "personalization", Color.parseColor("#303847"));
+        addMenuButton(m, getString(R.string.screen_saves), "saves", Color.parseColor("#303847"));
 
         LinearLayout row = new LinearLayout(this);
         LinearLayout.LayoutParams half =
@@ -187,9 +272,9 @@ public class WinNextDesktopActivity extends Activity {
             new LinearLayout.LayoutParams(0, -2, 1);
         half2.setMargins(dp(5), 0, 0, 0);
 
-        row.addView(button("Restart", Color.parseColor("#444444"),
+        row.addView(button(getString(R.string.desktop_restart), Color.parseColor("#444444"),
             v -> restart()), half);
-        row.addView(button("Shut down", Color.parseColor("#C42B1C"),
+        row.addView(button(getString(R.string.desktop_shutdown), Color.parseColor("#C42B1C"),
             v -> shutdown()), half2);
 
         LinearLayout.LayoutParams rp =
@@ -207,13 +292,13 @@ public class WinNextDesktopActivity extends Activity {
     }
 
     private void addMenuButton(LinearLayout parent, String label,
-                               String route, int color) {
+                               String action, int color) {
         LinearLayout.LayoutParams lp =
             new LinearLayout.LayoutParams(-1, -2);
         lp.topMargin = dp(7);
         parent.addView(button(label, color, v -> {
             closeMenu();
-            launchRoute(route);
+            handleMenuAction(action);
         }), lp);
     }
 
@@ -224,14 +309,44 @@ public class WinNextDesktopActivity extends Activity {
         }
     }
 
+    /** Restart: a real application restart (engine session ends; data is kept on disk). */
     private void restart() {
-        centerScreen("Restarting WinNext");
-        h.postDelayed(this::showBoot, 800);
+        bootScreen(getString(R.string.desktop_restarting));
+        h.postDelayed(() -> AppUtils.restartApplication(getApplicationContext()), 600);
     }
 
+    /** Shutdown: really closes WinNext. Installed programs and files stay on disk. */
     private void shutdown() {
-        centerScreen("Shutting down");
-        h.postDelayed(this::finishAndRemoveTask, 800);
+        bootScreen(getString(R.string.desktop_shutting_down));
+        h.postDelayed(this::finishAffinity, 600);
+    }
+
+    private void handleMenuAction(String action) {
+        switch (action) {
+            case "run_default":
+                runDefaultContainer();
+                break;
+            case "containers":
+                launchRoute("containers");
+                break;
+            case "shortcuts":
+                launchRoute("shortcuts");
+                break;
+            case "settings":
+                launchRoute("settings");
+                break;
+            case "file_manager":
+                launchRoute("file_manager");
+                break;
+            case "personalization":
+                launchRoute("personalization");
+                break;
+            case "saves":
+                launchRoute("saves");
+                break;
+            default:
+                launchRoute("containers");
+        }
     }
 
     private void launchRoute(String route) {
@@ -240,8 +355,28 @@ public class WinNextDesktopActivity extends Activity {
         startActivity(intent);
     }
 
-    private void openEngine() {
-        launchRoute("containers");
+    /** The blue "WinNext Apps" icon AND the Start-menu entry share this exact path. */
+    private void runDefaultContainer() {
+        if (preparing) return;
+        ContainerLauncher.launchDefaultContainer(this, new ContainerLauncher.Listener() {
+            @Override public void onLaunchStarted(com.winlator.star.container.Container container) {
+                // XServerDisplayActivity (singleTask) opens or restores the session.
+            }
+            @Override public void onLaunchFailed(String errorMessageKey) {
+                if ("engine_not_installed".equals(errorMessageKey)) {
+                    setupNeededScreen();
+                } else {
+                    Toast.makeText(WinNextDesktopActivity.this,
+                            R.string.launch_failed, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
+    /** Opens the real setup flow owned by MainActivity (installs engine files). */
+    private void openSetup() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("start_route", "containers");
+        startActivity(intent);
+    }
 }

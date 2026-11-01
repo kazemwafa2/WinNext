@@ -28,5 +28,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Winlator"
+rootProject.name = "WinNext"
 include ':app'

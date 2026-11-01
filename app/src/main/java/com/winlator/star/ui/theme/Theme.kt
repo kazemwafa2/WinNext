@@ -20,7 +20,7 @@ private val DefaultColorScheme = darkColorScheme(
 )
 
 @Composable
-fun WinlatorTheme(content: @Composable () -> Unit) {
+fun WinNextTheme(content: @Composable () -> Unit) {
     val colorScheme by AppThemeState.colorScheme.collectAsState(initial = AppThemeState.currentColorSchemeSnapshot())
     MaterialTheme(
         colorScheme = colorScheme,

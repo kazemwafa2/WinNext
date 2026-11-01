@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WinNext — Traduction française -->
+<resources>
+    <string name="screen_containers">Conteneurs</string>
+    <string name="screen_shortcuts">Raccourcis</string>
+    <string name="screen_settings">Paramètres</string>
+    <string name="screen_file_manager">Ce PC · Gestionnaire de fichiers</string>
+    <string name="screen_personalization">Personnalisation</string>
+    <string name="screen_saves">Sauvegardes</string>
+
+    <string name="desktop_preparing_engine">Préparation du moteur WinNext…</string>
+    <string name="desktop_preparing_container">Préparation de l\'environnement par défaut (le premier lancement peut prendre quelques minutes)…</string>
+    <string name="desktop_setup_needed">Le moteur WinNext n\'est pas encore installé</string>
+    <string name="desktop_setup_needed_desc">Avant le démarrage de l\'environnement Windows, les fichiers du moteur doivent être installés une fois. Vos données ne sont pas touchées.</string>
+    <string name="desktop_open_setup">Démarrer l\'installation</string>
+    <string name="desktop_apps_label">Applications WinNext</string>
+    <string name="desktop_menu_subtitle">Votre bureau</string>
+    <string name="desktop_run_windows_apps">Exécuter des applications Windows</string>
+    <string name="desktop_restart">Redémarrer</string>
+    <string name="desktop_shutdown">Éteindre</string>
+    <string name="desktop_restarting">Redémarrage de WinNext…</string>
+    <string name="desktop_shutting_down">Extinction…</string>
+    <string name="desktop_error_engine_missing">Les fichiers du moteur ne sont pas installés. Lancez d\'abord l\'installation.</string>
+    <string name="desktop_error_create_failed">L\'environnement par défaut n\'a pas pu être créé. Vérifiez l\'espace libre puis réessayez.</string>
+    <string name="desktop_error_recreate_failed">L\'environnement par défaut est endommagé et n\'a pas pu être réparé automatiquement.</string>
+
+    <string name="launch_already_starting">WinNext est déjà en cours de démarrage…</string>
+    <string name="launch_engine_not_ready">Le moteur n\'est pas encore prêt. Lancez d\'abord l\'installation.</string>
+    <string name="launch_failed">Le démarrage de l\'environnement Windows a échoué. Veuillez réessayer.</string>
+    <string name="launch_container_recreated">L\'environnement par défaut a été réparé. Les programmes déjà installés peuvent devoir être réinstallés.</string>
+
+    <string name="containers_empty_hint">Aucun conteneur pour le moment. L\'environnement par défaut est créé automatiquement — touchez l\'icône bleue Applications WinNext sur le bureau.</string>
+    <string name="container_import">Importer un conteneur</string>
+    <string name="container_imported">Conteneur importé : %1$s</string>
+    <string name="container_exported">Exporté vers %1$s</string>
+    <string name="container_export_failed">Échec de l\'exportation ou déjà existant</string>
+    <string name="container_import_title">Importer un conteneur</string>
+    <string name="container_import_empty">Aucun conteneur exporté trouvé dans Downloads/WinNext/Backups/Containers/.</string>
+    <string name="container_duplicate_confirm">Duplier « %1$s » ?</string>
+    <string name="container_remove_confirm">Supprimer « %1$s » définitivement ?</string>
+    <string name="container_duplicate">Dupliquer</string>
+    <string name="container_remove">Supprimer</string>
+    <string name="container_edit">Modifier</string>
+    <string name="container_export">Exporter</string>
+    <string name="container_info">Infos</string>
+    <string name="container_run">Exécuter</string>
+    <string name="container_storage_info">Infos stockage</string>
+    <string name="container_drive_c">Lecteur C</string>
+    <string name="container_cache">Cache</string>
+    <string name="container_total">Total</string>
+    <string name="container_estimated_used">Espace utilisé estimé</string>
+    <string name="container_clear_cache">Vider le cache</string>
+
+    <string name="personalization_wallpaper">Fond d\'écran</string>
+    <string name="personalization_wallpaper_builtin">Fonds d\'écran intégrés</string>
+    <string name="personalization_wallpaper_gallery">Choisir une image dans la galerie</string>
+    <string name="personalization_wallpaper_applied">Fond d\'écran appliqué. Il sera utilisé au prochain démarrage de l\'environnement Windows.</string>
+    <string name="personalization_theme">Thème du bureau</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="personalization_note">Ceci personnalise l\'environnement Windows réel (bureau Wine) et l\'interface WinNext.</string>
+    <string name="personalization_accent">Couleur d\'accentuation (interface WinNext)</string>
+    <string name="personalization_reset">Réinitialiser l\'apparence</string>
+    <string name="personalization_reset_done">L\'apparence a été réinitialisée.</string>
+    <string name="personalization_pick_image">Choisir une image</string>
+
+    <string name="fm_this_pc">Ce PC</string>
+    <string name="fm_drive_c">Lecteur C (environnement par défaut)</string>
+    <string name="fm_source_android">Stockage Android</string>
+    <string name="fm_source_container">Lecteur C de l\'environnement</string>
+    <string name="fm_empty">Le dossier est vide ou l\'accès est refusé.</string>
+    <string name="fm_delete_confirm">Supprimer « %1$s » définitivement ?</string>
+    <string name="fm_delete">Supprimer</string>
+    <string name="fm_exe_hint">Les programmes Windows (.exe/.msi) ne sont pas ouverts par Android. Installez-les ou exécutez-les dans un environnement WinNext.</string>
+    <string name="fm_up">Monter</string>
+    <string name="fm_refresh">Actualiser</string>
+    <string name="fm_home">Accueil</string>
+
+    <string name="lock_title">WinNext est verrouillé</string>
+    <string name="lock_enter_pin">Saisissez votre code PIN</string>
+    <string name="lock_wrong_pin">Code PIN incorrect. Veuillez réessayer.</string>
+    <string name="lock_too_many_attempts">Trop de tentatives. Attendez %1$d secondes.</string>
+    <string name="lock_unlock">Déverrouiller</string>
+    <string name="lock_enable">Verrouiller WinNext avec un code PIN</string>
+    <string name="lock_set_pin">Définir le code PIN</string>
+    <string name="lock_change_pin">Changer le code PIN</string>
+    <string name="lock_disable">Désactiver le verrouillage PIN</string>
+    <string name="lock_current_pin">Code PIN actuel</string>
+    <string name="lock_new_pin">Nouveau code PIN (4 à 8 chiffres)</string>
+    <string name="lock_pin_saved">Code PIN enregistré.</string>
+    <string name="lock_pin_invalid">Le code PIN doit contenir 4 à 8 chiffres.</string>
+    <string name="lock_pin_required">Définissez d\'abord un code PIN.</string>
+    <string name="lock_settings_title">Verrouillage de l\'application (facultatif)</string>
+
+    <string name="language_pashto">پښتو</string>
+    <string name="language_german">Allemand</string>
+    <string name="language_swiss_german">Allemand (Suisse)</string>
+    <string name="language_french">Français</string>
+    <string name="language_italian">Italien</string>
+    <string name="choose_language">Langue de l\'application</string>
+
+    <string name="about_designed_by">طراحی و توسعه: کاظم رفیعی\nDesigned and developed by Kazem Rafiei</string>
+    <string name="about_github">Page du projet sur GitHub</string>
+    <string name="about_report_issue">Signaler un problème</string>
+    <string name="about_powered_by">Propulsé par</string>
+    <string name="about_credits">Remerciements</string>
+    <string name="about_close">Fermer</string>
+    <string name="about_license_note">WinNext s\'appuie sur Wine/Proton, Box64, FEX-Emu et d\'autres projets open source. Leurs noms et licences sont préservés.</string>
+
+    <string name="drawer_section_environment">Environnement</string>
+    <string name="drawer_section_appearance">Apparence</string>
+
+    <string name="error_generic">Une erreur est survenue.</string>
+    <string name="retry">Réessayer</string>
+</resources>

@@ -68,7 +68,7 @@ import com.winlator.star.R
 import com.winlator.star.ui.theme.GlowPurple
 import com.winlator.star.ui.theme.Primary
 import com.winlator.star.ui.theme.PrimaryDim
-import com.winlator.star.ui.theme.WinlatorTheme
+import com.winlator.star.ui.theme.WinNextTheme
 import kotlinx.coroutines.delay
 
 private val PureBlack = Color(0xFF000000)
@@ -80,7 +80,7 @@ private val ToggleThumbOff = Color(0xFF666666)
 
 fun setupComposeView(view: ComposeView) {
     view.setContent {
-        WinlatorTheme {
+        WinNextTheme {
             XServerDrawer()
         }
     }

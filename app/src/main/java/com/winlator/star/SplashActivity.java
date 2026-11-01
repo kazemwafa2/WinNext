@@ -39,9 +39,11 @@ public class SplashActivity extends Activity {
             View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 
+        // Short brand display only — the real (previously faked) work of preparing the
+        // engine and the default container now happens inside WinNextDesktopActivity.
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, WinNextDesktopActivity.class));
             finish();
-        }, 2500);
+        }, 700);
     }
 }

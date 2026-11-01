@@ -1,7 +1,6 @@
 package com.winlator.star.ui.screens
 
 import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -55,14 +54,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.winlator.star.XServerDisplayActivity
-import com.winlator.star.XrActivity
 import com.winlator.star.container.Container
 import com.winlator.star.core.FileUtils
 import com.winlator.star.core.StringUtils
@@ -107,7 +105,7 @@ fun ContainersScreen(
     LaunchedEffect(Unit) {
         topBarActions.value = {
             IconButton(onClick = { showImportPicker = true }) {
-                Icon(Icons.Filled.FileDownload, contentDescription = "Import container", tint = androidx.compose.ui.graphics.Color.White)
+                Icon(Icons.Filled.FileDownload, contentDescription = stringResource(R.string.container_import), tint = androidx.compose.ui.graphics.Color.White)
             }
         }
     }
@@ -115,7 +113,7 @@ fun ContainersScreen(
         Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
         if (containers.isEmpty() && !isLoading) {
             Text(
-                text = "No containers yet. Tap + to create one.",
+                text = stringResource(R.string.containers_empty_hint),
                 color = OnSurfaceVariant,
                 modifier = Modifier.align(Alignment.Center),
             )
@@ -125,13 +123,9 @@ fun ContainersScreen(
                     ContainerItem(
                         container = container,
                         onRun = {
-                            if (!XrActivity.isEnabled(context)) {
-                                val intent = Intent(context, XServerDisplayActivity::class.java)
-                                intent.putExtra("container_id", container.id)
-                                context.startActivity(intent)
-                            } else {
-                                XrActivity.openIntent(activity, container.id, null)
-                            }
+                            // Shared execution service — the same path the blue
+                            // "WinNext Apps" icon uses (including VR routing).
+                            com.winlator.star.container.ContainerLauncher.launchContainer(activity, container.id)
                         },
                         onEdit = { onNavigateToDetail(container.id) },
                         onDuplicate = {
@@ -143,9 +137,9 @@ fun ContainersScreen(
                         onExport = {
                             vm.exportContainer(container) { path ->
                                 val msg = if (path != null)
-                                    "Exported to $path"
+                                    context.getString(R.string.container_exported, path)
                                 else
-                                    "Export failed or already exists"
+                                    context.getString(R.string.container_export_failed)
                                 Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
                             }
                         },
@@ -166,7 +160,7 @@ fun ContainersScreen(
                 .align(Alignment.BottomEnd)
                 .padding(20.dp),
         ) {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add container", tint = androidx.compose.ui.graphics.Color.White)
+            Icon(imageVector = Icons.Filled.Add, contentDescription = stringResource(R.string.new_container), tint = androidx.compose.ui.graphics.Color.White)
         }
 
         // Loading overlay
@@ -188,10 +182,10 @@ fun ContainersScreen(
         val backups = remember { vm.availableBackups() }
         AlertDialog(
             onDismissRequest = { showImportPicker = false },
-            title = { Text("Import Container") },
+            title = { Text(stringResource(R.string.container_import_title)) },
             text = {
                 if (backups.isEmpty()) {
-                    Text("No exported containers found in Downloads/Winlator/Backups/Containers/.")
+                    Text(stringResource(R.string.container_import_empty))
                 } else {
                     androidx.compose.foundation.layout.Column {
                         backups.forEach { dir ->
@@ -199,7 +193,7 @@ fun ContainersScreen(
                                 onClick = {
                                     showImportPicker = false
                                     vm.importContainer(dir) {
-                                        Toast.makeText(context, "Container imported: ${dir.name}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, context.getString(R.string.container_imported, dir.name), Toast.LENGTH_SHORT).show()
                                     }
                                 },
                                 modifier = Modifier.fillMaxWidth(),
@@ -211,7 +205,7 @@ fun ContainersScreen(
                 }
             },
             confirmButton = {
-                TextButton(onClick = { showImportPicker = false }) { Text("Cancel") }
+                TextButton(onClick = { showImportPicker = false }) { Text(stringResource(R.string.cancel)) }
             },
         )
     }
@@ -222,32 +216,32 @@ fun ContainersScreen(
             is ConfirmAction.Duplicate -> {
                 AlertDialog(
                     onDismissRequest = { confirmDialog = null },
-                    title = { Text("Duplicate container?") },
-                    text = { Text("Duplicate \"${action.container.name}\"?") },
+                    title = { Text(stringResource(R.string.container_duplicate)) },
+                    text = { Text(stringResource(R.string.container_duplicate_confirm, action.container.name)) },
                     confirmButton = {
                         TextButton(onClick = {
                             confirmDialog = null
                             vm.duplicate(action.container) {}
-                        }) { Text("Duplicate") }
+                        }) { Text(stringResource(R.string.container_duplicate)) }
                     },
                     dismissButton = {
-                        TextButton(onClick = { confirmDialog = null }) { Text("Cancel") }
+                        TextButton(onClick = { confirmDialog = null }) { Text(stringResource(R.string.cancel)) }
                     },
                 )
             }
             is ConfirmAction.Remove -> {
                 AlertDialog(
                     onDismissRequest = { confirmDialog = null },
-                    title = { Text("Remove container?") },
-                    text = { Text("Remove \"${action.container.name}\" permanently?") },
+                    title = { Text(stringResource(R.string.container_remove)) },
+                    text = { Text(stringResource(R.string.container_remove_confirm, action.container.name)) },
                     confirmButton = {
                         TextButton(onClick = {
                             confirmDialog = null
                             vm.remove(action.container, context) {}
-                        }) { Text("Remove") }
+                        }) { Text(stringResource(R.string.container_remove)) }
                     },
                     dismissButton = {
-                        TextButton(onClick = { confirmDialog = null }) { Text("Cancel") }
+                        TextButton(onClick = { confirmDialog = null }) { Text(stringResource(R.string.cancel)) }
                     },
                 )
             }
@@ -296,7 +290,7 @@ private fun ContainerItem(
         IconButton(onClick = onRun) {
             Icon(
                 imageVector = Icons.Filled.PlayArrow,
-                contentDescription = "Run",
+                contentDescription = stringResource(R.string.container_run),
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
@@ -314,27 +308,27 @@ private fun ContainerItem(
                 onDismissRequest = { menuExpanded = false },
             ) {
                 DropdownMenuItem(
-                    text = { Text("Edit") },
+                    text = { Text(stringResource(R.string.container_edit)) },
                     leadingIcon = { Icon(Icons.Filled.Edit, null) },
                     onClick = { menuExpanded = false; onEdit() },
                 )
                 DropdownMenuItem(
-                    text = { Text("Duplicate") },
+                    text = { Text(stringResource(R.string.container_duplicate)) },
                     leadingIcon = { Icon(Icons.Filled.ContentCopy, null) },
                     onClick = { menuExpanded = false; onDuplicate() },
                 )
                 DropdownMenuItem(
-                    text = { Text("Remove") },
+                    text = { Text(stringResource(R.string.container_remove)) },
                     leadingIcon = { Icon(Icons.Filled.Delete, null) },
                     onClick = { menuExpanded = false; onRemove() },
                 )
                 DropdownMenuItem(
-                    text = { Text("Export") },
+                    text = { Text(stringResource(R.string.container_export)) },
                     leadingIcon = { Icon(Icons.Filled.FileUpload, null) },
                     onClick = { menuExpanded = false; onExport() },
                 )
                 DropdownMenuItem(
-                    text = { Text("Info") },
+                    text = { Text(stringResource(R.string.container_info)) },
                     leadingIcon = { Icon(Icons.Filled.Info, null) },
                     onClick = { menuExpanded = false; onInfo() },
                 )
@@ -378,7 +372,7 @@ private fun StorageInfoDialog(container: Container, onDismiss: () -> Unit) {
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Storage Info") },
+        title = { Text(stringResource(R.string.container_storage_info)) },
         text = {
             Row(
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -389,13 +383,13 @@ private fun StorageInfoDialog(container: Container, onDismiss: () -> Unit) {
                     modifier = androidx.compose.ui.Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(2.dp),
                 ) {
-                    Text("Drive C", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.container_drive_c), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(StringUtils.formatBytes(driveCSize), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = androidx.compose.ui.Modifier.size(6.dp))
-                    Text("Cache", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.container_cache), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(StringUtils.formatBytes(cacheSize), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = androidx.compose.ui.Modifier.size(6.dp))
-                    Text("Total", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(stringResource(R.string.container_total), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(StringUtils.formatBytes(totalSize), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 }
                 // Right column — circular progress + label
@@ -415,7 +409,7 @@ private fun StorageInfoDialog(container: Container, onDismiss: () -> Unit) {
                     }
                     Spacer(modifier = androidx.compose.ui.Modifier.size(6.dp))
                     Text(
-                        "Estimated used space",
+                        stringResource(R.string.container_estimated_used),
                         fontSize = 11.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -429,7 +423,7 @@ private fun StorageInfoDialog(container: Container, onDismiss: () -> Unit) {
                 container.putExtra("desktopTheme", null)
                 container.saveData()
                 onDismiss()
-            }) { Text("Clear Cache") }
+            }) { Text(stringResource(R.string.container_clear_cache)) }
         },
     )
 }

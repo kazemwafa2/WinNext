@@ -176,7 +176,7 @@ class ShortcutsViewModel(app: Application) : AndroidViewModel(app) {
         // F:/D:/etc. as defined in container.drives. If no existing drive contains the
         // EXE path we add and persist a new letter pointing at the parent directory.
         val winPath = resolveWindowsPath(container, exeFile.absolutePath)
-        // 4-backslash separators per Winlator's two-pass StringUtils.unescape().
+        // 4-backslash separators per WinNext's two-pass StringUtils.unescape().
         val escaped = winPath.replace("\\", "\\\\\\\\")
         val content = buildString {
             append("[Desktop Entry]\n")

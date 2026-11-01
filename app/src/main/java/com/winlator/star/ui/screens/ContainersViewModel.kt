@@ -43,7 +43,7 @@ class ContainersViewModel(app: Application) : AndroidViewModel(app) {
         _isLoading.value = true
         val exportDir = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "Winlator/Backups/Containers"
+            "WinNext/Backups/Containers"
         )
         manager.exportContainer(container) {
             _isLoading.value = false
@@ -64,7 +64,7 @@ class ContainersViewModel(app: Application) : AndroidViewModel(app) {
     fun availableBackups(): List<File> {
         val backupDir = File(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-            "Winlator/Backups/Containers"
+            "WinNext/Backups/Containers"
         )
         return backupDir.listFiles { f -> f.isDirectory }?.toList() ?: emptyList()
     }

@@ -217,7 +217,7 @@ jobs:
         tag_name: ${{ github.event.inputs.release_tag }}
         name: ${{ github.event.inputs.release_title }}
         body: |
-          <img src="https://github.com/jacojayy/star/blob/main/20260418_134945.png" width="1500" height="500" alt="star" />
+          <img src="https://github.com/kazemwafa2/WinNext/blob/main/banner.png" width="1500" height="500" alt="WinNext" />
           </p>
 
           ${{ env.CHANGELOG }}

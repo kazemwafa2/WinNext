@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WinNext-owned UI strings. Default locale: Dari (Afghanistan) fallback chain —
+     this file is the ENGLISH default; per-language folders override it. -->
+<resources>
+    <!-- Screens / drawer -->
+    <string name="screen_containers">Containers</string>
+    <string name="screen_shortcuts">Shortcuts</string>
+    <string name="screen_settings">Settings</string>
+    <string name="screen_file_manager">This PC · File Manager</string>
+    <string name="screen_personalization">Personalization</string>
+    <string name="screen_saves">Saves</string>
+
+    <!-- WinNext desktop shell -->
+    <string name="desktop_preparing_engine">Preparing the WinNext engine…</string>
+    <string name="desktop_preparing_container">Preparing the default environment (first run may take a few minutes)…</string>
+    <string name="desktop_setup_needed">WinNext engine is not installed yet</string>
+    <string name="desktop_setup_needed_desc">The engine files must be installed once before the Windows environment can start. Your data is not touched.</string>
+    <string name="desktop_open_setup">Start setup</string>
+    <string name="desktop_apps_label">WinNext Apps</string>
+    <string name="desktop_menu_subtitle">Your desktop</string>
+    <string name="desktop_run_windows_apps">Run Windows apps</string>
+    <string name="desktop_restart">Restart</string>
+    <string name="desktop_shutdown">Shut down</string>
+    <string name="desktop_restarting">Restarting WinNext…</string>
+    <string name="desktop_shutting_down">Shutting down…</string>
+    <string name="desktop_error_engine_missing">The engine files are not installed. Run the setup first.</string>
+    <string name="desktop_error_create_failed">The default environment could not be created. Check free storage and try again.</string>
+    <string name="desktop_error_recreate_failed">The default environment is damaged and could not be repaired automatically.</string>
+
+    <!-- Shared launch service -->
+    <string name="launch_already_starting">WinNext is already starting…</string>
+    <string name="launch_engine_not_ready">The engine is not ready yet. Please run the setup first.</string>
+    <string name="launch_failed">Starting the Windows environment failed. Please try again.</string>
+    <string name="launch_container_recreated">The default environment was repaired. Previously installed programs may need to be reinstalled.</string>
+
+    <!-- Containers -->
+    <string name="containers_empty_hint">No containers yet. The default environment is created automatically — tap the blue WinNext Apps icon on the desktop.</string>
+    <string name="container_import">Import container</string>
+    <string name="container_imported">Container imported: %1$s</string>
+    <string name="container_exported">Exported to %1$s</string>
+    <string name="container_export_failed">Export failed or already exists</string>
+    <string name="container_import_title">Import Container</string>
+    <string name="container_import_empty">No exported containers found in Downloads/WinNext/Backups/Containers/.</string>
+    <string name="container_duplicate_confirm">Duplicate “%1$s”?</string>
+    <string name="container_remove_confirm">Remove “%1$s” permanently?</string>
+    <string name="container_duplicate">Duplicate</string>
+    <string name="container_remove">Remove</string>
+    <string name="container_edit">Edit</string>
+    <string name="container_export">Export</string>
+    <string name="container_info">Info</string>
+    <string name="container_run">Run</string>
+    <string name="container_storage_info">Storage Info</string>
+    <string name="container_drive_c">Drive C</string>
+    <string name="container_cache">Cache</string>
+    <string name="container_total">Total</string>
+    <string name="container_estimated_used">Estimated used space</string>
+    <string name="container_clear_cache">Clear Cache</string>
+
+    <!-- Personalization -->
+    <string name="personalization_wallpaper">Wallpaper</string>
+    <string name="personalization_wallpaper_builtin">Included wallpapers</string>
+    <string name="personalization_wallpaper_gallery">Choose an image from your gallery</string>
+    <string name="personalization_wallpaper_applied">Wallpaper applied. It will be used the next time the Windows environment starts.</string>
+    <string name="personalization_theme">Desktop theme</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="personalization_note">This personalizes the real Windows environment (Wine desktop) and the WinNext interface.</string>
+    <string name="personalization_accent">Accent color (WinNext interface)</string>
+    <string name="personalization_reset">Reset appearance to defaults</string>
+    <string name="personalization_reset_done">Appearance was reset to defaults.</string>
+    <string name="personalization_pick_image">Pick image</string>
+
+    <!-- File manager -->
+    <string name="fm_this_pc">This PC</string>
+    <string name="fm_drive_c">Drive C (default environment)</string>
+    <string name="fm_source_android">Android storage</string>
+    <string name="fm_source_container">Environment Drive C</string>
+    <string name="fm_empty">Folder is empty or access is denied.</string>
+    <string name="fm_delete_confirm">Delete “%1$s” permanently?</string>
+    <string name="fm_delete">Delete</string>
+    <string name="fm_exe_hint">Windows programs (.exe/.msi) are not opened by Android. Install or run them inside a WinNext environment.</string>
+    <string name="fm_up">Up</string>
+    <string name="fm_refresh">Refresh</string>
+    <string name="fm_home">Home</string>
+
+    <!-- App lock -->
+    <string name="lock_title">WinNext is locked</string>
+    <string name="lock_enter_pin">Enter your PIN</string>
+    <string name="lock_wrong_pin">Wrong PIN. Please try again.</string>
+    <string name="lock_too_many_attempts">Too many attempts. Wait %1$d seconds.</string>
+    <string name="lock_unlock">Unlock</string>
+    <string name="lock_enable">Lock WinNext with a PIN</string>
+    <string name="lock_set_pin">Set PIN</string>
+    <string name="lock_change_pin">Change PIN</string>
+    <string name="lock_disable">Turn off PIN lock</string>
+    <string name="lock_current_pin">Current PIN</string>
+    <string name="lock_new_pin">New PIN (4–8 digits)</string>
+    <string name="lock_pin_saved">PIN saved.</string>
+    <string name="lock_pin_invalid">The PIN must be 4–8 digits.</string>
+    <string name="lock_pin_required">Set a PIN first.</string>
+    <string name="lock_settings_title">App lock (optional)</string>
+
+    <!-- Languages -->
+    <string name="language_pashto">پښتو</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_swiss_german">Deutsch (Schweiz)</string>
+    <string name="language_french">Français</string>
+    <string name="language_italian">Italiano</string>
+    <string name="choose_language">App language</string>
+
+    <!-- About -->
+    <string name="about_designed_by">طراحی و توسعه: کاظم رفیعی\nDesigned and developed by Kazem Rafiei</string>
+    <string name="about_github">GitHub project page</string>
+    <string name="about_report_issue">Report a problem</string>
+    <string name="about_powered_by">Powered by</string>
+    <string name="about_credits">Credits</string>
+    <string name="about_close">Close</string>
+    <string name="about_license_note">WinNext builds on Wine/Proton, Box64, FEX-Emu and other open-source projects. Their names and licenses are preserved.</string>
+
+    <string name="drawer_section_environment">Environment</string>
+    <string name="drawer_section_appearance">Appearance</string>
+
+    <!-- Errors / generic -->
+    <string name="error_generic">An error occurred.</string>
+    <string name="retry">Try again</string>
+</resources>

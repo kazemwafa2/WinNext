@@ -5,7 +5,7 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import com.winlator.star.ui.theme.WinlatorTheme
+import com.winlator.star.ui.theme.WinNextTheme
 
 /**
  * Attaches a full-screen Compose PreloaderOverlay to the decor view of any AppCompatActivity.
@@ -19,7 +19,7 @@ object PreloaderOverlayHelper {
         val overlay = ComposeView(activity).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                WinlatorTheme {
+                WinNextTheme {
                     PreloaderOverlay()
                 }
             }

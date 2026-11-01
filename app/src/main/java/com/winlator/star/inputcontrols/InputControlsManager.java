@@ -188,13 +188,13 @@ public class InputControlsManager {
     public File exportProfile(ControlsProfile profile) {
         File destination;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String winlatorPath = sp.getString("winlator_path_uri", null);
-        if (winlatorPath != null) {
-            Uri winlatorUri = Uri.parse(winlatorPath);
-            destination = new File(FileUtils.getFilePathFromUri(context, winlatorUri), "profiles/" + profile.getName() + ".icp");
+        String winnextPath = sp.getString("winlator_path_uri", null);
+        if (winnextPath != null) {
+            Uri winnextUri = Uri.parse(winnextPath);
+            destination = new File(FileUtils.getFilePathFromUri(context, winnextUri), "profiles/" + profile.getName() + ".icp");
         }
         else {
-            destination = new File(SettingsFragment.DEFAULT_WINLATOR_PATH, "profiles/" + profile.getName() + ".icp");
+            destination = new File(SettingsFragment.DEFAULT_WINNEXT_PATH, "profiles/" + profile.getName() + ".icp");
         }
         FileUtils.copy(ControlsProfile.getProfileFile(context, profile.id), destination);
         MediaScannerConnection.scanFile(context, new String[]{destination.getAbsolutePath()}, null, null);

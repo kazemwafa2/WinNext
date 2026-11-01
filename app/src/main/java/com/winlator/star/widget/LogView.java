@@ -191,15 +191,15 @@ public class LogView extends View {
 
     public static File getLogFile(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String winlatorPath = sp.getString("winlator_path_uri", null);
+        String winnextPath = sp.getString("winlator_path_uri", null);
         File logsDir;
 
-        if (winlatorPath != null) {
-            Uri winlatorUri = Uri.parse(winlatorPath);
-            logsDir = new File(FileUtils.getFilePathFromUri(context, winlatorUri), "logs");
+        if (winnextPath != null) {
+            Uri winnextUri = Uri.parse(winnextPath);
+            logsDir = new File(FileUtils.getFilePathFromUri(context, winnextUri), "logs");
         }
         else {
-            logsDir = new File(SettingsFragment.DEFAULT_WINLATOR_PATH, "logs");
+            logsDir = new File(SettingsFragment.DEFAULT_WINNEXT_PATH, "logs");
         }
 
         if (!logsDir.exists())

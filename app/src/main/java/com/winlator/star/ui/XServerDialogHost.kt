@@ -11,11 +11,11 @@ import com.winlator.star.ui.dialogs.ScreenEffectsDialog
 import com.winlator.star.ui.dialogs.VibrationDialog
 import com.winlator.star.ui.overlays.FSROverlay
 import com.winlator.star.ui.overlays.MagnifierOverlay
-import com.winlator.star.ui.theme.WinlatorTheme
+import com.winlator.star.ui.theme.WinNextTheme
 
 fun setupDialogHost(view: ComposeView) {
     view.setContent {
-        WinlatorTheme {
+        WinNextTheme {
             XServerDialogHost()
         }
     }

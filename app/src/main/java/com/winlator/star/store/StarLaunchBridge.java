@@ -42,7 +42,7 @@ import java.util.ArrayList;
  *   2. If the store URL is absent or fails to download, fall back to
  *      SteamGridDB autocomplete → grids API (600x900 portrait cover).
  *
- * Shortcut format (Winlator .desktop):
+ * Shortcut format (WinNext .desktop):
  *   [Desktop Entry]
  *   Name=<game name>
  *   Exec=wine <Z:\path\to\game.exe>
@@ -154,8 +154,8 @@ public final class StarLaunchBridge {
                         ? exePath.substring(imageFsRoot.length()) : exePath;
                 if (relPath.startsWith("/")) relPath = relPath.substring(1);
 
-                // Convert to Windows path — match Winlator's native shortcut format.
-                // No WINEPREFIX in Exec=; Winlator derives WINEPREFIX from the container
+                // Convert to Windows path — match WinNext's native shortcut format.
+                // No WINEPREFIX in Exec=; WinNext derives WINEPREFIX from the container
                 // object via container_id.
                 // Use 4 backslashes per separator so StringUtils.unescape() produces
                 // a valid Z:\path\to\game.exe after its two-pass strip.

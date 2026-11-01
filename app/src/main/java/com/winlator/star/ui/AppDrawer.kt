@@ -18,6 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FolderOpen
+import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Memory
@@ -25,6 +26,7 @@ import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Settings
@@ -58,6 +60,7 @@ private fun iconFor(screen: Screen): ImageVector = when (screen) {
     Screen.FileManager   -> Icons.Filled.FolderOpen
     Screen.Settings      -> Icons.Filled.Settings
     Screen.Appearance    -> Icons.Filled.Palette
+    Screen.Personalization -> Icons.Filled.Brush
     Screen.LsfgSettings  -> Icons.Filled.Settings
     else                 -> Icons.Filled.Storefront
 }
@@ -102,7 +105,7 @@ fun AppDrawerContent(
             )
             Spacer(Modifier.width(12.dp))
             Text(
-                text = "Star Bionic",
+                text = "WinNext",
                 style = MaterialTheme.typography.titleMedium,
                 color = Color.White,
             )
@@ -110,10 +113,16 @@ fun AppDrawerContent(
 
         Divider(color = DividerColor)
 
-        SectionHeader("Emulation")
+        SectionHeader(stringResource(R.string.drawer_section_environment))
         DrawerItem(Screen.Shortcuts,     currentRoute, onNavigate)
         DrawerItem(Screen.Containers,    currentRoute, onNavigate)
         DrawerItem(Screen.Settings,      currentRoute, onNavigate)
+
+        Divider(color = DividerColor, modifier = Modifier.padding(top = 4.dp))
+
+        SectionHeader(stringResource(R.string.drawer_section_appearance))
+        DrawerItem(Screen.Personalization, currentRoute, onNavigate)
+        DrawerItem(Screen.Appearance,      currentRoute, onNavigate)
 
         Divider(color = DividerColor, modifier = Modifier.padding(top = 4.dp))
 
@@ -134,7 +143,7 @@ fun AppDrawerContent(
 
         SectionHeader("About And Support")
         DrawerIconItem(
-            label = "About",
+            label = stringResource(R.string.about),
             icon = Icons.Filled.Info,
             onClick = onAbout,
         )

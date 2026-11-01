@@ -207,7 +207,7 @@ public class FEXCorePresetManager {
                     presetFile = new File(path, "Presets/fexcore_" + preset[1] + ".wbp");
                 }
                 else {
-                    presetFile = new File(SettingsFragment.DEFAULT_WINLATOR_PATH, "Presets/fexcore_" + preset[1] + ".wbp");
+                    presetFile = new File(SettingsFragment.DEFAULT_WINNEXT_PATH, "Presets/fexcore_" + preset[1] + ".wbp");
                 }
                 if (!presetFile.getParentFile().exists())
                     presetFile.getParentFile().mkdirs();

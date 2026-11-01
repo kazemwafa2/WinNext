@@ -152,7 +152,7 @@ public class GLRenderer implements GLSurfaceView.Renderer, WindowManager.OnWindo
             GLES20.glUniform2f(windowMaterial.getUniformLocation("viewSize"), width, height);
 
             float[] screenshotXForm = XForm.getInstance();
-            // In Winlator, set(matrix, x, y, w, h) builds the transformation to fill the viewport
+            // In WinNext, set(matrix, x, y, w, h) builds the transformation to fill the viewport
             XForm.set(screenshotXForm, 0, 0, width, height);
             
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);

@@ -78,18 +78,18 @@ import java.util.concurrent.Executors;
 
 public class SettingsFragment extends Fragment {
     public static final String DEFAULT_WINE_DEBUG_CHANNELS = "warn,err,fixme";
-    public static final String DEFAULT_WINLATOR_PATH = Environment.getExternalStorageDirectory().getPath() + "/Winlator";
-    public static final String DEFAULT_SHORTCUT_EXPORT_PATH = DEFAULT_WINLATOR_PATH + "/Shortcuts";
+    public static final String DEFAULT_WINNEXT_PATH = Environment.getExternalStorageDirectory().getPath() + "/WinNext";
+    public static final String DEFAULT_SHORTCUT_EXPORT_PATH = DEFAULT_WINNEXT_PATH + "/Shortcuts";
     private Callback<Uri> installSoundFontCallback;
     private PreloaderDialog preloaderDialog;
     private SharedPreferences preferences;
 
-	// Disable or enable True Mouse Control
-	private CheckBox cbCursorLock;
+        // Disable or enable True Mouse Control
+        private CheckBox cbCursorLock;
     // Disable or enable Xinput Processing
     private CheckBox cbXinputToggle;
 
-	private boolean isRestoreAction = false;
+        private boolean isRestoreAction = false;
 
     private CheckBox cbEnableBigPictureMode;
     private CheckBox cbEnableCustomApiKey;
@@ -98,7 +98,7 @@ public class SettingsFragment extends Fragment {
     private CheckBox cbDarkMode;
     boolean isDarkMode;
 
-    private static final int REQUEST_CODE_WINLATOR_PATH = 1002;
+    private static final int REQUEST_CODE_WINNEXT_PATH = 1002;
     private static final int REQUEST_CODE_SHORTCUT_EXPORT_PATH = 1003;
     private static final int REQUEST_CODE_INSTALL_SOUNDFONT = 1001;
     private static final int REQUEST_CODE_IMPORT_BOX64_PRESET = 1004;
@@ -118,29 +118,135 @@ public class SettingsFragment extends Fragment {
         LinearLayout target = findLanguageLayout(parent);
         if (target == null) return;
 
+        // App lock controls (optional PIN protection for WinNext itself)
+        addAppLockControls(target, context);
+
         Button button = new Button(context);
-        button.setText("زبان برنامه / App language");
+        button.setText(context.getString(R.string.choose_language));
         target.addView(button, 0);
 
         button.setOnClickListener(v -> {
-            String[] names = {"دری", "فارسی", "English"};
-            String[] tags = {"fa-AF", "fa-IR", "en"};
+            String[] names = {
+                context.getString(R.string.language_dari),
+                context.getString(R.string.language_persian),
+                context.getString(R.string.language_pashto),
+                context.getString(R.string.language_english),
+                context.getString(R.string.language_german),
+                context.getString(R.string.language_swiss_german),
+                context.getString(R.string.language_french),
+                context.getString(R.string.language_italian)
+            };
+            String[] tags = {"fa-AF", "fa-IR", "ps", "en", "de", "de-CH", "fr", "it"};
             String current = preferences.getString("app_language_tag", "fa-AF");
             int selected = 0;
             for (int i = 0; i < tags.length; i++) {
                 if (tags[i].equals(current)) selected = i;
             }
             new AlertDialog.Builder(context)
-                .setTitle("انتخاب زبان / Choose language")
+                .setTitle(context.getString(R.string.choose_language))
                 .setSingleChoiceItems(names, selected, (dialog, which) -> {
                     preferences.edit().putString("app_language_tag", tags[which]).apply();
                     AppCompatDelegate.setApplicationLocales(
                         LocaleListCompat.forLanguageTags(tags[which]));
                     dialog.dismiss();
                 })
-                .setNegativeButton("لغو", null)
+                .setNegativeButton(context.getString(R.string.cancel), null)
                 .show();
         });
+    }
+
+    /** Optional PIN lock for the app itself. The PIN is salted+hashed, never stored raw. */
+    private void addAppLockControls(LinearLayout target, Context context) {
+        LinearLayout box = new LinearLayout(context);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.setPadding(0, (int) (8 * context.getResources().getDisplayMetrics().density), 0, 0);
+
+        TextView title = new TextView(context);
+        title.setText(context.getString(R.string.lock_settings_title));
+        title.setTextSize(16);
+        title.setPadding(0, 0, 0, 4);
+        box.addView(title);
+
+        final CheckBox cbLock = new CheckBox(context);
+        cbLock.setText(context.getString(R.string.lock_enable));
+        cbLock.setChecked(com.winlator.star.core.AppLockManager.isEnabled(context));
+        box.addView(cbLock);
+
+        Button changePin = new Button(context);
+        changePin.setText(context.getString(R.string.lock_change_pin));
+        box.addView(changePin);
+
+        cbLock.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Enabling always requires setting a PIN first (nothing is stored raw).
+                if (!com.winlator.star.core.AppLockManager.isEnabled(context)) {
+                    buttonView.setChecked(false);
+                    promptSetPin(context, () -> buttonView.setChecked(true));
+                }
+            } else {
+                if (com.winlator.star.core.AppLockManager.isEnabled(context)) {
+                    // Disabling requires the current PIN — no silent removal.
+                    promptDisableLock(context, () -> buttonView.setChecked(false),
+                            () -> buttonView.setChecked(true));
+                }
+            }
+        });
+
+        changePin.setOnClickListener(v -> promptSetPin(context, null));
+
+        // Insert the lock section after the language button slot (top of the panel).
+        target.addView(box, 0);
+    }
+
+    private void promptSetPin(Context context, Runnable onSuccess) {
+        final EditText input = new EditText(context);
+        input.setHint(context.getString(R.string.lock_new_pin));
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER
+                | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        new AlertDialog.Builder(context)
+            .setTitle(context.getString(R.string.lock_set_pin))
+            .setView(input)
+            .setPositiveButton(context.getString(R.string.ok), (dialog, which) -> {
+                String pin = input.getText().toString().trim();
+                if (!pin.matches("\\d{4,8}")) {
+                    android.widget.Toast.makeText(context,
+                            context.getString(R.string.lock_pin_invalid),
+                            android.widget.Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (com.winlator.star.core.AppLockManager.setPin(context, pin)) {
+                    android.widget.Toast.makeText(context,
+                            context.getString(R.string.lock_pin_saved),
+                            android.widget.Toast.LENGTH_LONG).show();
+                    if (onSuccess != null) onSuccess.run();
+                }
+            })
+            .setNegativeButton(context.getString(R.string.cancel), null)
+            .show();
+    }
+
+    private void promptDisableLock(Context context, Runnable onDisabled, Runnable onCancelled) {
+        final EditText input = new EditText(context);
+        input.setHint(context.getString(R.string.lock_current_pin));
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER
+                | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+        new AlertDialog.Builder(context)
+            .setTitle(context.getString(R.string.lock_disable))
+            .setView(input)
+            .setPositiveButton(context.getString(R.string.ok), (dialog, which) -> {
+                if (com.winlator.star.core.AppLockManager.verifyPin(context,
+                        input.getText().toString().trim())) {
+                    com.winlator.star.core.AppLockManager.disable(context);
+                    onDisabled.run();
+                } else {
+                    android.widget.Toast.makeText(context,
+                            context.getString(R.string.lock_wrong_pin),
+                            android.widget.Toast.LENGTH_LONG).show();
+                    onCancelled.run();
+                }
+            })
+            .setNegativeButton(context.getString(R.string.cancel), (d, w) -> onCancelled.run())
+            .show();
     }
 
     private LinearLayout findLanguageLayout(ViewGroup parent) {
@@ -210,23 +316,23 @@ public class SettingsFragment extends Fragment {
         cbXinputToggle = view.findViewById(R.id.CBXinputToggle);
         cbXinputToggle.setChecked(preferences.getBoolean("xinput_toggle", false));
 
-        Button btnChooseWinlatorPath = view.findViewById(R.id.BTChooseWinlatorPath);
-        TextView tvWinlatorPath = view.findViewById(R.id.TVWinlatorPath);
+        Button btnChooseWinNextPath = view.findViewById(R.id.BTChooseWinNextPath);
+        TextView tvWinNextPath = view.findViewById(R.id.TVWinNextPath);
 
         String savedUriString = preferences.getString("winlator_path_uri", null);
         if (savedUriString == null) {
             // No saved path, set default path
-            tvWinlatorPath.setText(DEFAULT_WINLATOR_PATH);
+            tvWinNextPath.setText(DEFAULT_WINNEXT_PATH);
         } else {
             // Parse and display the saved URI path
             Uri savedUri = Uri.parse(savedUriString);
             String displayPath = FileUtils.getFilePathFromUri(getContext(), savedUri);
-            tvWinlatorPath.setText(displayPath != null ? displayPath : savedUriString);
+            tvWinNextPath.setText(displayPath != null ? displayPath : savedUriString);
         }
 
-        btnChooseWinlatorPath.setOnClickListener(v -> {
+        btnChooseWinNextPath.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE); // Launch File Picker for directory selection
-            startActivityForResult(intent, REQUEST_CODE_WINLATOR_PATH);
+            startActivityForResult(intent, REQUEST_CODE_WINNEXT_PATH);
         });
 
         Button btChooseShortcutExportPath = view.findViewById(R.id.BTChooseShortcutExportPath);
@@ -360,7 +466,7 @@ public class SettingsFragment extends Fragment {
             ContentDialog.confirm(context, R.string.do_you_want_to_reinstall_imagefs, () -> ImageFsInstaller.installFromAssets((MainActivity) getActivity()));
         });
 
-		// Add backup button
+                // Add backup button
         Button btnBackupData = view.findViewById(R.id.BTBackupData);
         btnBackupData.setOnClickListener(v -> {
             showBackupConfirmationDialog();
@@ -407,7 +513,7 @@ public class SettingsFragment extends Fragment {
                 requireActivity().getOnBackPressedDispatcher().onBackPressed();
             }
 
-			AppUtils.showToast(context, "Settings saved!");
+                        AppUtils.showToast(context, "Settings saved!");
         });
 
 
@@ -731,7 +837,7 @@ public class SettingsFragment extends Fragment {
 
 
 
-	private void showBackupConfirmationDialog() {
+        private void showBackupConfirmationDialog() {
         new AlertDialog.Builder(getContext())
                 .setTitle("Backup Data")
                 .setMessage("Do you want to create a backup of the app's data directory?")
@@ -777,7 +883,7 @@ public class SettingsFragment extends Fragment {
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("*/*");
         startActivityForResult(intent, MainActivity.OPEN_FILE_REQUEST_CODE);
-	}
+        }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -792,7 +898,7 @@ public class SettingsFragment extends Fragment {
 
                 switch (requestCode) {
 
-                    case REQUEST_CODE_WINLATOR_PATH:
+                    case REQUEST_CODE_WINNEXT_PATH:
                         // Save the selected URI as a string in SharedPreferences
                         editor.putString("winlator_path_uri", uri.toString());
                         editor.apply();
@@ -812,8 +918,8 @@ public class SettingsFragment extends Fragment {
                         String fullPath = FileUtils.getFilePathFromUri(getContext(), uri);
 
                         // Update the TextView with the absolute path or URI string if conversion fails
-                        TextView tvWinlatorPath = getView().findViewById(R.id.TVWinlatorPath);
-                        tvWinlatorPath.setText(fullPath != null ? fullPath : uri.toString());
+                        TextView tvWinNextPath = getView().findViewById(R.id.TVWinNextPath);
+                        tvWinNextPath.setText(fullPath != null ? fullPath : uri.toString());
                         break;
 
                     case REQUEST_CODE_SHORTCUT_EXPORT_PATH:
@@ -879,7 +985,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-	private void restoreAppData(Uri backupUri) {
+        private void restoreAppData(Uri backupUri) {
         if (getActivity() != null) {  // Ensure the activity is not null
             Intent intent = new Intent(getActivity(), RestoreActivity.class);
             intent.setData(backupUri);
@@ -902,7 +1008,7 @@ public class SettingsFragment extends Fragment {
             preloaderDialog.closeOnUiThread();
             AppUtils.showToast(getContext(), "Data restore failed.");
         });
-	}
+        }
 
     private void moveFiles(File sourceDir, File targetDir) throws IOException {
         File[] files = sourceDir.listFiles();

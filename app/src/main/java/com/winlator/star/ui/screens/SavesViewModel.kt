@@ -106,7 +106,7 @@ class SavesViewModel(app: Application) : AndroidViewModel(app) {
                 }
                 val exportDirectory = File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
-                    "Winlator/Saves",
+                    "WinNext/Saves",
                 )
                 if (!exportDirectory.exists()) exportDirectory.mkdirs()
 

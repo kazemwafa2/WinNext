@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WinNext — ترجمهٔ دری (افغانستان). زبان پیش‌فرض برنامه. -->
+<resources>
+    <!-- Screens / drawer -->
+    <string name="screen_containers">کانتینرها</string>
+    <string name="screen_shortcuts">میان‌برها</string>
+    <string name="screen_settings">تنظیمات</string>
+    <string name="screen_file_manager">این کامپیوتر · مدیریت فایل</string>
+    <string name="screen_personalization">شخصی‌سازی</string>
+    <string name="screen_saves">ذخیره‌ها</string>
+
+    <!-- WinNext desktop shell -->
+    <string name="desktop_preparing_engine">در حال آماده‌سازی موتور WinNext…</string>
+    <string name="desktop_preparing_container">در حال آماده‌سازی محیط پیش‌فرض (در اولین اجرا چند دقیقه زمان می‌برد)…</string>
+    <string name="desktop_setup_needed">موتور WinNext هنوز نصب نشده است</string>
+    <string name="desktop_setup_needed_desc">پیش از آغاز محیط ویندوزی، باید فایل‌های موتور یک‌بار نصب شوند. معلومات و فایل‌های شما دست‌نخورده می‌مانند.</string>
+    <string name="desktop_open_setup">آغاز نصب</string>
+    <string name="desktop_apps_label">برنامه‌های WinNext</string>
+    <string name="desktop_menu_subtitle">دسکتاپ شما</string>
+    <string name="desktop_run_windows_apps">اجرای برنامه‌های ویندوزی</string>
+    <string name="desktop_restart">روشن کردن مجدد</string>
+    <string name="desktop_shutdown">خاموش کردن</string>
+    <string name="desktop_restarting">در حال روشن کردن مجدد WinNext…</string>
+    <string name="desktop_shutting_down">در حال خاموش شدن…</string>
+    <string name="desktop_error_engine_missing">فایل‌های موتور نصب نیستند. لطفاً نخست نصب را اجرا کنید.</string>
+    <string name="desktop_error_create_failed">محیط پیش‌فرض ساخته نشد. فضای خالی دستگاه را بررسی کنید و دوباره تلاش کنید.</string>
+    <string name="desktop_error_recreate_failed">محیط پیش‌فرض خراب شده و به‌صورت خودکار ترمیم نشد.</string>
+
+    <!-- Shared launch service -->
+    <string name="launch_already_starting">WinNext از قبل در حال آغاز است…</string>
+    <string name="launch_engine_not_ready">موتور هنوز آماده نیست. لطفاً نخست نصب را اجرا کنید.</string>
+    <string name="launch_failed">آغاز محیط ویندوزی ناکام ماند. لطفاً دوباره تلاش کنید.</string>
+    <string name="launch_container_recreated">محیط پیش‌فرض ترمیم شد. ممکن است برنامه‌های نصب‌شدهٔ قبلی دوباره نصب شوند.</string>
+
+    <!-- Containers -->
+    <string name="containers_empty_hint">هنوز کانتینری وجود ندارد. محیط پیش‌فرض خودبه‌خود ساخته می‌شود — آیکون آبی برنامه‌های WinNext را در دسکتاپ لمس کنید.</string>
+    <string name="container_import">وارد کردن کانتینر</string>
+    <string name="container_imported">کانتینر وارد شد: %1$s</string>
+    <string name="container_exported">صادر شد به %1$s</string>
+    <string name="container_export_failed">صادرکردن ناکام ماند یا از قبل موجود است</string>
+    <string name="container_import_title">وارد کردن کانتینر</string>
+    <string name="container_import_empty">هیچ کانتینر صادرشده‌ای در Downloads/WinNext/Backups/Containers/ یافت نشد.</string>
+    <string name="container_duplicate_confirm">«%1$s» تکثیر شود؟</string>
+    <string name="container_remove_confirm">«%1$s» برای همیشه حذف شود؟</string>
+    <string name="container_duplicate">تکثیر</string>
+    <string name="container_remove">حذف</string>
+    <string name="container_edit">ویرایش</string>
+    <string name="container_export">صادر کردن</string>
+    <string name="container_info">معلومات</string>
+    <string name="container_run">اجرا</string>
+    <string name="container_storage_info">معلومات ذخیره</string>
+    <string name="container_drive_c">درایو C</string>
+    <string name="container_cache">کش</string>
+    <string name="container_total">مجموع</string>
+    <string name="container_estimated_used">فضای استفاده‌شدهٔ تخمینی</string>
+    <string name="container_clear_cache">پاک کردن کش</string>
+
+    <!-- Personalization -->
+    <string name="personalization_wallpaper">تصویر پس‌زمینه</string>
+    <string name="personalization_wallpaper_builtin">تصاویر درون‌برنامه‌ای</string>
+    <string name="personalization_wallpaper_gallery">انتخاب تصویر از گالری شما</string>
+    <string name="personalization_wallpaper_applied">تصویر پس‌زمینه اعمال شد. در اجرای بعدی محیط ویندوزی استفاده می‌شود.</string>
+    <string name="personalization_theme">تم دسکتاپ</string>
+    <string name="theme_light">روشن</string>
+    <string name="theme_dark">تاریک</string>
+    <string name="personalization_note">این تنظیمات، محیط واقعی ویندوزی (دسکتاپ Wine) و رابط WinNext را شخصی می‌کند.</string>
+    <string name="personalization_accent">رنگ تأکیدی (رابط WinNext)</string>
+    <string name="personalization_reset">بازگرداندن ظاهر به حالت پیش‌فرض</string>
+    <string name="personalization_reset_done">ظاهر به حالت پیش‌فرض بازگردانده شد.</string>
+    <string name="personalization_pick_image">انتخاب تصویر</string>
+
+    <!-- File manager -->
+    <string name="fm_this_pc">این کامپیوتر</string>
+    <string name="fm_drive_c">درایو C (محیط پیش‌فرض)</string>
+    <string name="fm_source_android">حافظهٔ اندروید</string>
+    <string name="fm_source_container">درایو C محیط</string>
+    <string name="fm_empty">پوشه خالی است یا دسترسی داده نشده است.</string>
+    <string name="fm_delete_confirm">«%1$s» برای همیشه حذف شود؟</string>
+    <string name="fm_delete">حذف</string>
+    <string name="fm_exe_hint">برنامه‌های ویندوزی (.exe/.msi) با اندروید باز نمی‌شوند. آن‌ها را داخل محیط WinNext نصب یا اجرا کنید.</string>
+    <string name="fm_up">بالا</string>
+    <string name="fm_refresh">بازخوانی</string>
+    <string name="fm_home">خانه</string>
+
+    <!-- App lock -->
+    <string name="lock_title">WinNext قفل شده است</string>
+    <string name="lock_enter_pin">رمز (PIN) خود را وارد کنید</string>
+    <string name="lock_wrong_pin">رمز نادرست است. لطفاً دوباره تلاش کنید.</string>
+    <string name="lock_too_many_attempts">تلاش‌های زیاد. %1$d ثانیه صبر کنید.</string>
+    <string name="lock_unlock">گشودن قفل</string>
+    <string name="lock_enable">قفل WinNext با رمز (PIN)</string>
+    <string name="lock_set_pin">تنظیم رمز</string>
+    <string name="lock_change_pin">تغییر رمز</string>
+    <string name="lock_disable">خاموش کردن قفل رمز</string>
+    <string name="lock_current_pin">رمز فعلی</string>
+    <string name="lock_new_pin">رمز جدید (۴ تا ۸ رقم)</string>
+    <string name="lock_pin_saved">رمز ذخیره شد.</string>
+    <string name="lock_pin_invalid">رمز باید ۴ تا ۸ رقم باشد.</string>
+    <string name="lock_pin_required">نخست رمز را تنظیم کنید.</string>
+    <string name="lock_settings_title">قفل برنامه (اختیاری)</string>
+
+    <!-- Languages -->
+    <string name="language_pashto">پښتو</string>
+    <string name="language_german">آلمانی</string>
+    <string name="language_swiss_german">آلمانی سوئیسی</string>
+    <string name="language_french">فرانسوی</string>
+    <string name="language_italian">ایتالیایی</string>
+    <string name="choose_language">زبان برنامه</string>
+
+    <!-- About -->
+    <string name="about_designed_by">طراحی و توسعه: کاظم رفیعی\nDesigned and developed by Kazem Rafiei</string>
+    <string name="about_github">صفحهٔ پروژه در GitHub</string>
+    <string name="about_report_issue">گزارش یک مشکل</string>
+    <string name="about_powered_by">توان‌گرفته از</string>
+    <string name="about_credits">قدردانی</string>
+    <string name="about_close">بستن</string>
+    <string name="about_license_note">WinNext بر پایهٔ Wine/Proton، Box64، FEX-Emu و پروژه‌های متن‌باز دیگر ساخته شده است؛ نام‌ها و مجوزهای آن‌ها حفظ می‌شود.</string>
+
+    <string name="drawer_section_environment">محیط اجرا</string>
+    <string name="drawer_section_appearance">ظاهر</string>
+
+    <!-- Errors / generic -->
+    <string name="error_generic">خطایی رخ داد.</string>
+    <string name="retry">تلاش مجدد</string>
+</resources>

@@ -331,7 +331,7 @@ public abstract class Box64PresetManager {
                     presetFile = new File(path, "Presets/" + prefix + "_" + preset[1] + ".wbp");
                 }
                 else {
-                    presetFile = new File(SettingsFragment.DEFAULT_WINLATOR_PATH, "Presets/" + prefix + "_" + preset[1] + ".wbp");
+                    presetFile = new File(SettingsFragment.DEFAULT_WINNEXT_PATH, "Presets/" + prefix + "_" + preset[1] + ".wbp");
                 }
                 if (!presetFile.getParentFile().exists())
                     presetFile.getParentFile().mkdirs();

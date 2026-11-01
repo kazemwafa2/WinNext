@@ -146,7 +146,7 @@ import java.util.regex.Pattern;
 import cn.sherlock.com.sun.media.sound.SF2Soundbank;
 
 public class XServerDisplayActivity extends AppCompatActivity {
-    public static String NOTIFICATION_CHANNEL_ID = "Winlator";
+    public static String NOTIFICATION_CHANNEL_ID = "WinNext";
     public static int NOTIFICATION_ID = -1;
     private XServerView xServerView;
     private InputControlsView inputControlsView;
@@ -218,8 +218,8 @@ public class XServerDisplayActivity extends AppCompatActivity {
     private EnvVars overrideEnvVars;
 
     private void createNotifcationChannel() {
-        String name = "Winlator";
-        String description = "Winlator XServer Messages";
+        String name = "WinNext";
+        String description = "WinNext XServer Messages";
         int importance = NotificationManager.IMPORTANCE_HIGH;
         NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
         channel.setDescription(description);
@@ -682,8 +682,8 @@ public class XServerDisplayActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stat_ab_gear_0011)
-                .setContentTitle("Winlator")
-                .setContentText("Winlator is running, do not kill or swipe this notification")
+                .setContentTitle("WinNext")
+                .setContentText("WinNext is running, do not kill or swipe this notification")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(false);

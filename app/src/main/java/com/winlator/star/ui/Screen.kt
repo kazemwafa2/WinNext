@@ -10,6 +10,7 @@ sealed class Screen(val route: String, val label: String, val iconName: String) 
     object FileManager   : Screen("file_manager",   "File Manager",           "folder_open")
     object Settings      : Screen("settings",       "Settings",               "settings")
     object Appearance    : Screen("appearance",     "Appearance",             "palette")
+    object Personalization : Screen("personalization", "Personalization",     "brush")
     object LsfgSettings  : Screen("lsfg_settings",  "Vegas FrameGen",           "video_settings")
 
     object Gog    : Screen("gog",    "GOG",          "storefront")
@@ -21,7 +22,7 @@ sealed class Screen(val route: String, val label: String, val iconName: String) 
 
     companion object {
         val drawerItems by lazy {
-            listOf(Shortcuts, Containers, Settings, Appearance, InputControls, AdrenoTools, LsfgSettings, Saves)
+            listOf(Shortcuts, Containers, Settings, Personalization, Appearance, InputControls, AdrenoTools, LsfgSettings, Saves)
         }
         val storeItems by lazy {
             listOf(Gog, Epic, Amazon, Steam)

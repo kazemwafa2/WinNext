@@ -117,7 +117,9 @@ public class ContainerManager {
         });
     }
 
-    private Container createContainer(JSONObject data, ContentsManager contentsManager) {
+    /** Public so DefaultContainerManager can create the shared default container on a
+     *  background thread (createContainerAsync always posts through the main handler). */
+    public Container createContainer(JSONObject data, ContentsManager contentsManager) {
         try {
             int id = maxContainerId + 1;
             data.put("id", id);
@@ -342,7 +344,7 @@ public class ContainerManager {
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
                 // Create the export directory path
-                File exportDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Winlator/Backups/Containers");
+                File exportDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "WinNext/Backups/Containers");
 
                 if (!exportDir.exists() && !exportDir.mkdirs()) {
                     Log.e("ContainerManager", "Failed to create export directory: " + exportDir.getPath());

@@ -19,7 +19,7 @@ public final class GogInstallPath {
 
     /**
      * Converts an absolute Android path under imagefs/ to a Wine Z: path.
-     * Winlator maps Z: → {filesDir}/imagefs, so we strip that prefix and
+     * The engine maps Z: → {filesDir}/imagefs, so we strip that prefix and
      * replace forward slashes with backslashes.
      *
      * e.g. .../imagefs/gog_games/Game/game.exe → Z:\gog_games\Game\game.exe

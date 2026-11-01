@@ -3,7 +3,7 @@ package com.winlator.star.store;
 import android.app.Activity;
 
 /**
- * Launch bridge for GOG games in Star (Winlator fork).
+ * Launch bridge for GOG games in Star.
  * Delegates to StarLaunchBridge which shows a container picker and
  * writes a .desktop shortcut with cover art.
  */

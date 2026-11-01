@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WinNext — پښتو ژباړه -->
+<resources>
+    <!-- Screens / drawer -->
+    <string name="screen_containers">کانتینرونه</string>
+    <string name="screen_shortcuts">لنډلارې</string>
+    <string name="screen_settings">امستنې</string>
+    <string name="screen_file_manager">دا کمپیوټر · د فایل مدیریت</string>
+    <string name="screen_personalization">ځانی ترفند</string>
+    <string name="screen_saves">بېلګې</string>
+
+    <!-- WinNext desktop shell -->
+    <string name="desktop_preparing_engine">د WinNext انجن چمتو کیږي…</string>
+    <string name="desktop_preparing_container">د نریما چاپېریال چمتو کیږي (په لومړي ځل کې څو دقیقې نیسي)…</string>
+    <string name="desktop_setup_needed">د WinNext انجن تر اوسه نه دی نصب شوی</string>
+    <string name="desktop_setup_needed_desc">له دې وړاندې چې د ویندوز چاپېریال پیل شي، د انجن فایلونه یو ځل باید نصب شي. ستاسو معلومات نه بدلیږي.</string>
+    <string name="desktop_open_setup">نصب پیل کړه</string>
+    <string name="desktop_apps_label">WinNext پروګرامونه</string>
+    <string name="desktop_menu_subtitle">ستاسو ډیسک ټاپ</string>
+    <string name="desktop_run_windows_apps">د ویندوز پروګرامونه پرانیستل</string>
+    <string name="desktop_restart">بیا پیلول</string>
+    <string name="desktop_shutdown">بندول</string>
+    <string name="desktop_restarting">WinNext بیا پیل کیږي…</string>
+    <string name="desktop_shutting_down">بندیدل روان دي…</string>
+    <string name="desktop_error_engine_missing">د انجن فایلونه نصب نه دي. مهرباني وکړئ لومړی نصب پیل کړئ.</string>
+    <string name="desktop_error_create_failed">نریما چاپېریال جوړ نشو. د پرانېستې ځای وګورئ او بیا هڅه وکړئ.</string>
+    <string name="desktop_error_recreate_failed">نریما چاپېریال زیانمن شوی او په اتومات ډول ترمیم نشو.</string>
+
+    <!-- Shared launch service -->
+    <string name="launch_already_starting">WinNext لا دمخه پیل شوی دی…</string>
+    <string name="launch_engine_not_ready">انجن لا چمتو نه دی. مهرباني وکړئ لومړی نصب پیل کړئ.</string>
+    <string name="launch_failed">د ویندوز چاپېریال پیل ناکام شو. مهرباني وکړئ بیا هڅه وکړئ.</string>
+    <string name="launch_container_recreated">نریما چاپېریال ترمیم شو. کیدای شي پخواني نصب شوي پروګرامونه بیا نصب شي.</string>
+
+    <!-- Containers -->
+    <string name="containers_empty_hint">تر اوسه کانتینر نشته. نریما چاپېریال په اتومات ډول جوړیږي — په ډیسک ټاپ کې د WinNext پروګرامونو ابي آیکن ورکړئ.</string>
+    <string name="container_import">کانتینر راوړل</string>
+    <string name="container_imported">کانتینر راوړل شو: %1$s</string>
+    <string name="container_exported">صادر شو: %1$s</string>
+    <string name="container_export_failed">صادرول ناکام شو یا لا دمخه شته</string>
+    <string name="container_import_title">کانتینر راوړل</string>
+    <string name="container_import_empty">په Downloads/WinNext/Backups/Containers/ کې صادر شوی کانتینر ونه موندل شو.</string>
+    <string name="container_duplicate_confirm">«%1$s» کاپي شي؟</string>
+    <string name="container_remove_confirm">«%1$s» تلپاتې ړنګ شي؟</string>
+    <string name="container_duplicate">کاپي</string>
+    <string name="container_remove">ړنګول</string>
+    <string name="container_edit">سمول</string>
+    <string name="container_export">صادرول</string>
+    <string name="container_info">معلومات</string>
+    <string name="container_run">پرانیستل</string>
+    <string name="container_storage_info">د زیرمې معلومات</string>
+    <string name="container_drive_c">درایو C</string>
+    <string name="container_cache">کېش</string>
+    <string name="container_total">ټول</string>
+    <string name="container_estimated_used">اټکل شوې کارېدلې فضا</string>
+    <string name="container_clear_cache">کېش پاکول</string>
+
+    <!-- Personalization -->
+    <string name="personalization_wallpaper">پس منظر انځور</string>
+    <string name="personalization_wallpaper_builtin">دننه انځورونه</string>
+    <string name="personalization_wallpaper_gallery">له خپل ګالري څخه انځور غوره کړئ</string>
+    <string name="personalization_wallpaper_applied">پس منظر انځور پلی شو. راتلونکي ځل کې به د ویندوز چاپېریال کې وکارول شي.</string>
+    <string name="personalization_theme">د ډیسک ټاپ تیم</string>
+    <string name="theme_light">روښانه</string>
+    <string name="theme_dark">توره</string>
+    <string name="personalization_note">دا امستنې ریښتیني ویندوز چاپېریال (Wine ډیسک ټاپ) او د WinNext مخ ته ځانګړی بڼه ورکوي.</string>
+    <string name="personalization_accent">ټینګار رنګ (د WinNext مخ)</string>
+    <string name="personalization_reset">بڼه بېرته نریما حالت ته راوړل</string>
+    <string name="personalization_reset_done">بڼه نریما حالت ته راوګرځېده.</string>
+    <string name="personalization_pick_image">انځور غوره کړه</string>
+
+    <!-- File manager -->
+    <string name="fm_this_pc">دا کمپیوټر</string>
+    <string name="fm_drive_c">درایو C (نریما چاپېریال)</string>
+    <string name="fm_source_android">د اندروید زیرمه</string>
+    <string name="fm_source_container">د چاپېریال درایو C</string>
+    <string name="fm_empty">فولډر تش دی یا لاسرسی نه دی ورکړل شوی.</string>
+    <string name="fm_delete_confirm">«%1$s» تلپاتې ړنګ شي؟</string>
+    <string name="fm_delete">ړنګول</string>
+    <string name="fm_exe_hint">د ویندوز پروګرامونه (.exe/.msi) اندروید نه پرانیزي. دا په WinNext چاپېریال کې نصب یا پرانیزئ.</string>
+    <string name="fm_up">پورته</string>
+    <string name="fm_refresh">بیا کتل</string>
+    <string name="fm_home">کور</string>
+
+    <!-- App lock -->
+    <string name="lock_title">WinNext تړل شوی دی</string>
+    <string name="lock_enter_pin">خپل PIN دننه کړئ</string>
+    <string name="lock_wrong_pin">PIN سم نه دی. مهرباني وکړئ بیا هڅه وکړئ.</string>
+    <string name="lock_too_many_attempts">ډېرې هڅې وشوې. %1$d ثانیې تمه وکړئ.</string>
+    <string name="lock_unlock">خلاصول</string>
+    <string name="lock_enable">WinNext د PIN سره تړل</string>
+    <string name="lock_set_pin">PIN ټاکل</string>
+    <string name="lock_change_pin">PIN بدلول</string>
+    <string name="lock_disable">د PIN تړل بندول</string>
+    <string name="lock_current_pin">اوسنی PIN</string>
+    <string name="lock_new_pin">نوی PIN (۴ تر ۸ ګوني)</string>
+    <string name="lock_pin_saved">PIN خوندي شو.</string>
+    <string name="lock_pin_invalid">PIN باید ۴ تر ۸ ګوني وي.</string>
+    <string name="lock_pin_required">لومړی PIN وټاکئ.</string>
+    <string name="lock_settings_title">د پروګرام تړل (اختیاري)</string>
+
+    <!-- Languages -->
+    <string name="language_pashto">پښتو</string>
+    <string name="language_german">آلماني</string>
+    <string name="language_swiss_german">سویسي آلماني</string>
+    <string name="language_french">فرانسوي</string>
+    <string name="language_italian">ایتالوي</string>
+    <string name="choose_language">د پروګرام ژبه</string>
+
+    <!-- About -->
+    <string name="about_designed_by">طراحي او پراختیا: کاظم رفیعي\nDesigned and developed by Kazem Rafiei</string>
+    <string name="about_github">د GitHub پروژه پاڼه</string>
+    <string name="about_report_issue">ستونزه راپور ورکړه</string>
+    <string name="about_powered_by">چمتو شوی له</string>
+    <string name="about_credits">مننه</string>
+    <string name="about_close">تړل</string>
+    <string name="about_license_note">WinNext د Wine/Proton، Box64، FEX-Emu او نورو خلاصو پروژو پر بنسټ جوړ شوی؛ نومونه او جوازونه یې خوندي پاتې کیږي.</string>
+
+    <string name="drawer_section_environment">چاپېریال</string>
+    <string name="drawer_section_appearance">بڼه</string>
+
+    <!-- Errors / generic -->
+    <string name="error_generic">یوه ستونزه رامنځته شوه.</string>
+    <string name="retry">بیا هڅه</string>
+</resources>

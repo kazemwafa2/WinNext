@@ -31,6 +31,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Divider
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
@@ -41,6 +42,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -76,7 +78,7 @@ import com.winlator.star.ui.Screen
 import com.winlator.star.ui.screens.SplashScreen
 import com.winlator.star.ui.screens.SplashViewModel
 import com.winlator.star.ui.theme.AppThemeState
-import com.winlator.star.ui.theme.WinlatorTheme
+import com.winlator.star.ui.theme.WinNextTheme
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -143,8 +145,8 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, BigPictureActivity::class.java))
         }
 
-        val winlatorDir = File(SettingsFragment.DEFAULT_WINLATOR_PATH)
-        if (!winlatorDir.exists()) winlatorDir.mkdirs()
+        val winnextDir = File(SettingsFragment.DEFAULT_WINNEXT_PATH)
+        if (!winnextDir.exists()) winnextDir.mkdirs()
 
         containerManager = ContainerManager(this)
 
@@ -159,6 +161,7 @@ class MainActivity : AppCompatActivity() {
             Screen.Saves.route,
             Screen.FileManager.route,
             Screen.Appearance.route,
+            Screen.Personalization.route,
             Screen.InputControls.route,
             Screen.AdrenoTools.route,
             Screen.LsfgSettings.route
@@ -192,10 +195,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         setContent {
-            WinlatorTheme {
+            WinNextTheme {
                 val isInstalling by splashViewModel.isInstalling.collectAsState()
                 val installProgress by splashViewModel.progress.collectAsState()
                 val showProceed by splashViewModel.showProceed.collectAsState()
+
+                // Optional app lock (independent of any Windows-side account).
+                var appLocked by remember {
+                    mutableStateOf(com.winlator.star.core.AppLockManager.isEnabled(this))
+                }
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     AppShell(
@@ -215,6 +223,10 @@ class MainActivity : AppCompatActivity() {
                         onAboutRequested = { showAboutDialog.value = true },
                         onLaunchStore = { screen -> launchStore(screen) },
                     )
+
+                    if (appLocked) {
+                        AppLockOverlay(onUnlocked = { appLocked = false })
+                    }
 
                     if (isInstalling) {
                         SplashScreen(
@@ -334,7 +346,7 @@ private fun AppShell(
             val id = backstackEntry?.arguments?.getInt("id") ?: -1
             if (id > 0) context.getString(R.string.edit_container) else context.getString(R.string.new_container)
         }
-        else -> Screen.drawerItems.firstOrNull { it.route == currentRoute }?.label ?: "Winlator"
+        else -> Screen.drawerItems.firstOrNull { it.route == currentRoute }?.label ?: "WinNext"
     }
 
     CompositionLocalProvider(LocalTopBarActions provides topBarActionsState) {
@@ -422,6 +434,7 @@ private fun AllFilesAccessDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
 
 @Composable
 private fun AboutDialog(onDismiss: () -> Unit) {
+    val context = LocalContext.current
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -443,13 +456,13 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                     modifier = androidx.compose.ui.Modifier.size(72.dp)
                 )
                 Text(
-                    text = "Star Bionic",
+                    text = "WinNext",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "v1.3-vegas",
+                    text = "v" + BuildConfig.VERSION_NAME,
                     fontSize = 13.sp,
                     color = com.winlator.star.ui.theme.OnSurfaceVariant
                 )
@@ -458,9 +471,34 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                 Divider(color = com.winlator.star.ui.theme.Divider)
                 Spacer(androidx.compose.ui.Modifier.height(4.dp))
 
-                // Powered by
-                AboutSection(title = "Powered By") {
-                    AboutRow("Wine",    "Windows compatibility layer")
+                // Author credit (project owner requirement)
+                Text(
+                    text = stringResource(R.string.about_designed_by),
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(androidx.compose.ui.Modifier.height(4.dp))
+
+                // GitHub project + report issue
+                TextButton(onClick = {
+                    context.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kazemwafa2/WinNext")))
+                }) { Text(stringResource(R.string.about_github)) }
+                TextButton(onClick = {
+                    context.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kazemwafa2/WinNext/issues")))
+                }) { Text(stringResource(R.string.about_report_issue)) }
+
+                Spacer(androidx.compose.ui.Modifier.height(4.dp))
+                Divider(color = com.winlator.star.ui.theme.Divider)
+                Spacer(androidx.compose.ui.Modifier.height(4.dp))
+
+                // Powered by — external engine names and credits are preserved as-is.
+                AboutSection(title = stringResource(R.string.about_powered_by)) {
+                    AboutRow("Wine / Proton 9.0", "Windows compatibility layer")
                     AboutRow("Box64",   "x86_64 emulation on ARM")
                     AboutRow("FEX-Emu", "Fast x86 emulator")
                     AboutRow("Turnip",  "Open-source Vulkan driver")
@@ -470,21 +508,29 @@ private fun AboutDialog(onDismiss: () -> Unit) {
                 Divider(color = com.winlator.star.ui.theme.Divider)
                 Spacer(androidx.compose.ui.Modifier.height(4.dp))
 
-                // Credits
-                AboutSection(title = "Credits") {
+                // Credits — upstream projects are preserved.
+                AboutSection(title = stringResource(R.string.about_credits)) {
                     AboutRow("brunodev85",      "Winlator — original project")
                     AboutRow("MishaMixXx",      "Winlator Bionic")
-                    AboutRow("The412Banner",    "Star-Compose / Star Bionic")
+                    AboutRow("The412Banner",    "Star-Compose")
                     AboutRow("ptitSeb",         "Box64")
                     AboutRow("WineHQ",          "Wine project")
                     AboutRow("Mesa / Freedreno","Turnip Vulkan driver")
                 }
 
+                Spacer(androidx.compose.ui.Modifier.height(4.dp))
+                Text(
+                    text = stringResource(R.string.about_license_note),
+                    fontSize = 11.sp,
+                    textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                    color = com.winlator.star.ui.theme.OnSurfaceVariant
+                )
+
                 Spacer(androidx.compose.ui.Modifier.height(8.dp))
                 TextButton(
                     onClick = onDismiss,
                     modifier = androidx.compose.ui.Modifier.fillMaxWidth()
-                ) { Text("Close") }
+                ) { Text(stringResource(R.string.about_close)) }
             }
         }
     }
@@ -514,4 +560,64 @@ private fun AboutRow(name: String, description: String) {
         Spacer(androidx.compose.ui.Modifier.width(8.dp))
         Text(text = description, fontSize = 12.sp, color = com.winlator.star.ui.theme.OnSurfaceVariant)
     }
+}
+
+/**
+ * Full-screen PIN lock for the WinNext app itself (optional feature).
+ * Verification and rate limiting are handled by AppLockManager; the PIN is
+ * never stored in plain text and never logged.
+ */
+@Composable
+private fun AppLockOverlay(onUnlocked: () -> Unit) {
+    val context = LocalContext.current
+    var pin by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf<String?>(null) }
+    var lockoutSeconds by remember { mutableStateOf(0L) }
+
+    AlertDialog(
+        onDismissRequest = { /* must be unlocked — WinNext data stays protected */ },
+        title = { Text(stringResource(R.string.lock_title)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(stringResource(R.string.lock_enter_pin))
+                OutlinedTextField(
+                    value = pin,
+                    onValueChange = { value ->
+                        if (value.length <= 8 && value.all { it.isDigit() }) pin = value
+                    },
+                    singleLine = true,
+                    visualTransformation = androidx.compose.ui.text.input.PasswordVisualTransformation(),
+                    keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                        keyboardType = androidx.compose.ui.text.input.KeyboardType.NumberPassword),
+                    isError = error != null,
+                    enabled = lockoutSeconds <= 0L,
+                )
+                error?.let { Text(it, color = androidx.compose.material3.MaterialTheme.colorScheme.error, fontSize = 13.sp) }
+            }
+        },
+        confirmButton = {
+            TextButton(
+                enabled = lockoutSeconds <= 0L && pin.isNotEmpty(),
+                onClick = {
+                    val out = LongArray(1)
+                    if (com.winlator.star.core.AppLockManager.isLockedOut(context, out)) {
+                        lockoutSeconds = out[0]
+                        error = context.getString(R.string.lock_too_many_attempts, out[0])
+                        return@TextButton
+                    }
+                    if (com.winlator.star.core.AppLockManager.verifyPin(context, pin)) {
+                        onUnlocked()
+                    } else {
+                        pin = ""
+                        if (com.winlator.star.core.AppLockManager.isLockedOut(context, out)) {
+                            lockoutSeconds = out[0]
+                            error = context.getString(R.string.lock_too_many_attempts, out[0])
+                        } else {
+                            error = context.getString(R.string.lock_wrong_pin)
+                        }
+                    }
+                }
+            ) { Text(stringResource(R.string.lock_unlock)) }
+        },
+    )
 }
