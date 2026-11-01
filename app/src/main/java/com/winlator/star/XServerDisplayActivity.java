@@ -1820,7 +1820,14 @@ public class XServerDisplayActivity extends AppCompatActivity {
 
     // --- Environment Variable Setup ---
     String vulkanVersion = graphicsDriverConfig.get("vulkanVersion");
-    String vulkanVersionPatch = GPUInformation.getVulkanVersion(adrenoToolsDriverId, this).split("\\.")[2];
+    String detectedVulkanVersion = GPUInformation.getVulkanVersion(adrenoToolsDriverId, this);
+String[] vulkanParts = detectedVulkanVersion != null
+        ? detectedVulkanVersion.split("\\.")
+        : new String[0];
+
+String vulkanVersionPatch = vulkanParts.length > 2
+        ? vulkanParts[2]
+        : "0";
     vulkanVersion = (vulkanVersion != null ? vulkanVersion : "1.3") + "." + vulkanVersionPatch;
     envVars.put("WRAPPER_VK_VERSION", vulkanVersion);
 
